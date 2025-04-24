@@ -3,7 +3,7 @@ function Invoke-TerraformPlan {
 		.SYNOPSIS
 		Invoke "terraform.exe plan" command
 		.DESCRIPTION
-		The function plans changes of a Terraform project folder using "terraform plan" command and options. In addition, 
+		The function plans changes of a Terraform project folder using "terraform plan" command and options. In addition,
         using -OutFileGraph parameter, the function creates a tfgraph file for VS Code Terraform Graph extention.
 		.PARAMETER WorkingDir [System.IO.FileInfo]
 		The mandatory parameter $WorkingDir represents the project directory (project's root module) to execute the command in.
@@ -35,7 +35,7 @@ function Invoke-TerraformPlan {
 		[System.IO.FileInfo] $WorkingDir,
 		[Parameter(Mandatory=$false)]
 		[bool] $Lock = $true,
-		[Parameter(Mandatory=$false)] 
+		[Parameter(Mandatory=$false)]
 		[bool] $Out = $false,
 		[Parameter(Mandatory=$false)]
 		[string] $OutFile = "tfplan",
@@ -54,17 +54,17 @@ function Invoke-TerraformPlan {
 		if ($Out) {
 			Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 			Write-Host -Object "-> Planning changes using plan file...`n" -ForegroundColor DarkGray
-			$Global:TerraformPlan = Start-Process -FilePath "terraform.exe" -ArgumentList "plan $LockOption $RefreshOption -out=$OutFile" -NoNewWindow -PassThru -Wait
+			Start-Process -FilePath "terraform.exe" -ArgumentList "plan $LockOption $RefreshOption -out=$OutFile" -NoNewWindow -PassThru -Wait | Out-Null
 			Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 			if ($OutFileGraph) {
 				Write-Host -Object "-> Creating visualization file from plan for Terraform Graph VSCode extension... " -ForegroundColor DarkGray -NoNewLine
-				$Global:TerraformShow = Start-Process -FilePath "terraform.exe" -ArgumentList "show -json $OutFile" -NoNewWindow -PassThru -Wait -RedirectStandardOutput ".\$OutFile.tfgraph"
+				Start-Process -FilePath "terraform.exe" -ArgumentList "show -json $OutFile" -NoNewWindow -PassThru -Wait -RedirectStandardOutput ".\$OutFile.tfgraph" | Out-Null
 			}
 		}
 		else {
 			Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 			Write-Host -Object "-> Planning changes...`n" -ForegroundColor DarkGray
-			$Global:TerraformPlan = Start-Process -FilePath "terraform.exe" -ArgumentList "plan $LockOption $RefreshOption" -NoNewWindow -PassThru -Wait
+			Start-Process -FilePath "terraform.exe" -ArgumentList "plan $LockOption $RefreshOption" -NoNewWindow -PassThru -Wait | Out-Null
 		}
 	}
 	end {

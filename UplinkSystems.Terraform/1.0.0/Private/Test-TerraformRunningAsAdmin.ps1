@@ -16,7 +16,7 @@ function Test-TerraformRunningAsAdmin {
 	#>
 	[CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
     [Alias("Test-TfRunAsAdmin")]
-    [OutputType([bool])]
+    [OutputType([System.Boolean])]
     param()
     begin {
         $ErrorActionPreference = 'SilentlyContinue'

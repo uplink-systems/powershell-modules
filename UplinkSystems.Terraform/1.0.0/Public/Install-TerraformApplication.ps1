@@ -4,7 +4,7 @@ function Install-TerraformApplication {
 		Download and install Terraform application (Windows x64 version only)
 		.DESCRIPTION
 		The function installs the Terraform application to the local system (Windows x64 version
-        only). It checks HashiCorps' GitHub repository for the latest release number (tag and
+        only). It checks HashiCorps' GitHub repository for the latest release number (tag) and
         downloads the 64 bit version for Windows from HashiCorp's release site. After that the
         script expands the archive and moves the application to program files directory. The
         function depends on HashiCorp maintaining its current naming convention.
@@ -84,7 +84,7 @@ function Install-TerraformApplication {
             Write-Host -Object "Installing Terraform executable... " -ForegroundColor DarkGray -NoNewline
             if (-not(Test-Path -Path $InstallDir)) {
                 New-Item -Path $InstallDir -ItemType Directory
-            } 
+            }
             Copy-Item -Path $ArchiveExpandFilePath -Destination $InstallDir -Recurse -Force -ErrorAction Stop
             if (-not($ENV:Path -Split ';' | Where-Object {$_ -like "*Terraform*"})) {$ENV:Path += $InstallDir}
             Write-Host -Object "Success..." -ForegroundColor Green

@@ -30,7 +30,7 @@ function Set-TerraformEnvironmentVariable {
 	begin {
         $ErrorActionPreference = 'SilentlyContinue'
 		if (($System) -and (Test-TerraformRunningAsAdmin -ne $true)) {
-			Write-Host -Object "`nSpecified to create 'System' variables but session is not running as Administrator... " -ForegroundColor DarkGray -NoNewline
+			Write-Host -Object "`nSpecified to create 'System' variables but session is not running as Administrator..." -ForegroundColor DarkGray -NoNewline
 			Write-Host -Object "Creating 'User' variables instead..." -ForegroundColor DarkGray
 			$System = $false
 		}

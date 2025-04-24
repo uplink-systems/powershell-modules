@@ -3,7 +3,7 @@ function Invoke-TerraformCustom {
 		.SYNOPSIS
 		Invoke any "terraform.exe" command/options combination specified in an argument list
 		.DESCRIPTION
-		The function runs any "terraform.exe" command. To specify which command/options shall run the function either 
+		The function runs any "terraform.exe" command. To specify which command/options shall run the function either
 		provide the parameter $ArgumentList or enter the command/options while executing the function.
 		.PARAMETER WorkingDir [System.IO.FileInfo]
 		The mandatory parameter $WorkingDir represents the project directory (project's root module) to execute the command in.
@@ -42,7 +42,7 @@ function Invoke-TerraformCustom {
 		}
 		Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 		Write-Host -Object "-> Running custom command: terrafrom.exe $($ArgumentList)...`n" -ForegroundColor DarkGray
-		$Global:TerraformCustom = Start-Process -FilePath "terraform.exe" -ArgumentList $ArgumentList -NoNewWindow -PassThru -Wait
+		Start-Process -FilePath "terraform.exe" -ArgumentList $ArgumentList -NoNewWindow -PassThru -Wait | Out-Null
 	}
 	end {
 		Set-Location -Path $MyInvocation.PSScriptRoot

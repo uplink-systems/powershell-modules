@@ -41,7 +41,7 @@ function Test-TerraformRequirement {
 		# 	Write-Host -Object "Failed...: " -ForegroundColor Red
 		# 	Write-Host -Object "Terraform executable version not supported...`n" -ForegroundColor DarkGray
 		#   Start-Sleep -Seconds 2
-		# 	exit 1 
+		# 	exit 1
 		# }
 		Write-Host -Object "Success... " -ForegroundColor Green
 	}

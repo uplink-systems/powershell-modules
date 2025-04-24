@@ -4,7 +4,7 @@ function Invoke-TerraformDestroy {
 		Invoke "terraform.exe plan -destroy" or "terraform apply -destroy" commands
 		.DESCRIPTION
 		The function destroys resources of a Terraform project folder using "terraform plan -destroy" command
-		or "terraform apply -destroy" command. The command depends on $Mode parameter value. In addition, 
+		or "terraform apply -destroy" command. The command depends on $Mode parameter value. In addition,
         using -OutFileGraph parameter, the function creates a tfgraph file for VS Code Terraform Graph extention.
 		.PARAMETER WorkingDir [System.IO.FileInfo]
 		The mandatory parameter $WorkingDir represents the project directory (project's root module) to execute the command in.
@@ -49,7 +49,7 @@ function Invoke-TerraformDestroy {
 		[Parameter(Mandatory=$false)]
 		[ValidateSet("apply","plan")]
 		[string] $Mode = "plan",
-		[Parameter(Mandatory=$false)] 
+		[Parameter(Mandatory=$false)]
 		[bool] $Out = $false,
 		[Parameter(Mandatory=$false)]
 		[string] $OutFile = "tfplan",
@@ -70,31 +70,31 @@ function Invoke-TerraformDestroy {
 			"plan" {
 				if ($Out) {
 					Write-Host -Object "-> Destroying deployment in plan mode (dry-run) using plan file... `n" -ForegroundColor DarkGray
-					$Global:TerraformDestroy = Start-Process -FilePath "terraform.exe" -ArgumentList "plan -destroy $LockOption $RefreshOption -out=$OutFile" -NoNewWindow -PassThru -Wait
+					Start-Process -FilePath "terraform.exe" -ArgumentList "plan -destroy $LockOption $RefreshOption -out=$OutFile" -NoNewWindow -PassThru -Wait | Out-Null
 					Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 					if ($OutFileGraph) {
 						Write-Host -Object "-> Creating visualization file from plan... " -ForegroundColor DarkGray -NoNewLine
-						$Global:TerraformShow = Start-Process -FilePath "terraform.exe" -ArgumentList "show -json $OutFile" -NoNewWindow -PassThru -Wait -RedirectStandardOutput ".\$OutFile.tfgraph"
+						Start-Process -FilePath "terraform.exe" -ArgumentList "show -json $OutFile" -NoNewWindow -PassThru -Wait -RedirectStandardOutput ".\$OutFile.tfgraph" | Out-Null
 					}
 				} else {
 					Write-Host -Object "-> Destroying deployment in plan mode (dry-run)...`n" -ForegroundColor DarkGray
-					$Global:TerraformDestroy = Start-Process -FilePath "terraform.exe" -ArgumentList "plan -destroy $LockOption $RefreshOption" -NoNewWindow -PassThru -Wait
+					Start-Process -FilePath "terraform.exe" -ArgumentList "plan -destroy $LockOption $RefreshOption" -NoNewWindow -PassThru -Wait | Out-Null
 				}
 			}
 			"apply" {
 				if ($Out -and (Test-Path -Path $OutFile)) {
 					Write-Host -Object "-> Destroying deployment using plan file...`n" -ForegroundColor DarkGray
 					if ($AutoApprove) {
-						$Global:TerraformDestroy = Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy -auto-approve $LockOption $OutFile" -NoNewWindow -PassThru -Wait
+						Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy -auto-approve $LockOption $OutFile" -NoNewWindow -PassThru -Wait | Out-Null
 					} else {
-						$Global:TerraformDestroy = Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy $LockOption $OutFile" -NoNewWindow -PassThru -Wait
+						Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy $LockOption $OutFile" -NoNewWindow -PassThru -Wait | Out-Null
 					}
 				} else {
 					Write-Host -Object "-> Destroying deployment...`n" -ForegroundColor DarkGray
 					if ($AutoApprove) {
-						$Global:TerraformDestroy = Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy -auto-approve $LockOption" -NoNewWindow -PassThru -Wait
+						Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy -auto-approve $LockOption" -NoNewWindow -PassThru -Wait | Out-Null
 					} else {
-						$Global:TerraformDestroy = Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy $LockOption" -NoNewWindow -PassThru -Wait
+						Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy $LockOption" -NoNewWindow -PassThru -Wait | Out-Null
 					}
 				}
 

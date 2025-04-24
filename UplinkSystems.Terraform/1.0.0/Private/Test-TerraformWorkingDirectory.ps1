@@ -14,6 +14,7 @@ function Test-TerraformWorkingDirectory {
 	#>
 	[CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
 	[Alias("Test-TfWorkingDirectory")]
+	[OutputType([System.Boolean])]
 	param(
 		[Parameter(Mandatory=$true,ValueFromPipeline)] [System.IO.FileInfo] $WorkingDir
 	)

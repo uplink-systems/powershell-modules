@@ -24,7 +24,7 @@ function Invoke-TerraformWorkingDirectoryCleanup {
         .EXAMPLE
         Invoke-TerraformWorkingDirectoryCleanup -WorkingDir "C:\Terraform\ProjectName" -OutFile "terraformplan"
 	#>
-    
+
 	[CmdletBinding(SupportsShouldProcess=$true,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
     [Alias ("Invoke-TfWorkingDirCleanup")]
 	param(
@@ -50,7 +50,7 @@ function Invoke-TerraformWorkingDirectoryCleanup {
             Remove-Item -Path $OutFilePath -Force
         }
         if (Test-Path -Path $OutFilePathTfGraph) {
-            Remove-Item -Path $OutFilePathTfGraph -Force 
+            Remove-Item -Path $OutFilePathTfGraph -Force
         }
     }
     end {}

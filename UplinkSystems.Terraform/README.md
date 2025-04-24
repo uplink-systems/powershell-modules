@@ -2,7 +2,7 @@
 
 ### Description
 
-The module **UplinkSystems.Terraform** provides PowerShell functions to manage Terraform projects from PowerShell scripts where no DevOps pipelining is available for automation. To achieve this goal the module contains the following exported functions that can be used with its parameters to automate Terraform project commands:  
+The module **UplinkSystems.Terraform** provides PowerShell functions to manage Terraform projects from PowerShell scripts where no DevOps pipelining is available for automation. To achieve this goal the module contains the following public functions that can be used with its parameters to automate Terraform project commands:  
   
 * <code>Install-TerraformApplication</code>
 * <code>Invoke-TerraformApply</code>

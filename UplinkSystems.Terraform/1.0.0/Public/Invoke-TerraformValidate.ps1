@@ -25,7 +25,7 @@ function Invoke-TerraformValidate {
 	process {
 		Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 		Write-Host -Object "-> Validating code...`n" -ForegroundColor DarkGray
-		$Global:TerraformValidate = Start-Process -FilePath "terraform.exe" -ArgumentList "validate" -NoNewWindow -PassThru -Wait
+		Start-Process -FilePath "terraform.exe" -ArgumentList "validate" -NoNewWindow -PassThru -Wait | Out-Null
 	}
 	end {
 		Set-Location -Path $MyInvocation.PSScriptRoot

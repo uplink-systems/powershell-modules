@@ -30,11 +30,11 @@ function Invoke-TerraformInit {
 		Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 		if ($Upgrade) {
 			Write-Host -Object "-> Initializing project and upgrading plugin versions...`n" -ForegroundColor DarkGray
-			$Global:TerraformInit = Start-Process -FilePath "terraform.exe" -ArgumentList "init -upgrade" -NoNewWindow -PassThru -Wait
+			Start-Process -FilePath "terraform.exe" -ArgumentList "init -upgrade" -NoNewWindow -PassThru -Wait | Out-Null
 		} else {
 			Write-Host -Object "-> Initializing project...`n" -ForegroundColor DarkGray
-			$Global:TerraformInit = Start-Process -FilePath "terraform.exe" -ArgumentList "init" -NoNewWindow -PassThru -Wait
-		} 
+			Start-Process -FilePath "terraform.exe" -ArgumentList "init" -NoNewWindow -PassThru -Wait | Out-Null
+		}
 		Start-Sleep -Seconds 2
 	}
 	end {

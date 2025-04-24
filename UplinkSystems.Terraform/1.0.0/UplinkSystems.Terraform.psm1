@@ -14,7 +14,7 @@ $ModuleImportLogo=@"
 
     ___   ___ _______ ___    ____ __  ___ ____ ___      ________ ___   ____ _______ _________ _______ ___  ____   ________
    /  /  /  /   __   /  /   /   /   |/   /   /   /     /  _____/   /  /   /  _____/__    ___/   ____/    |/    | /  _____/
-  /  /  /  /   /_/  /  /   /   /    |   /       /     /____   /   /__/   /____      /   /  /   __/ /     |     |/____   
+  /  /  /  /   /_/  /  /   /   /    |   /       /     /____   /   /__/   /____      /   /  /   __/ /     |     |/____
  /  /__/  /   _____/  /___/   /   |    /   |   |     _____/  /___    ___/____/  /  /   /  /   /___/   |    |   |____/  /
 /________/___/    /______/___/___/|___/___/|___|    /_______/   /___/  /_______/  /___/  /_______/___/|___/|___|______/
 
@@ -25,7 +25,6 @@ Write-Host -Object $ModuleImportLogo -ForegroundColor Cyan
 $DirectorySeparator = [System.IO.Path]::DirectorySeparatorChar
 $ModuleName = (Get-Item -Path $PSCommandPath).Basename
 $ModuleManifest = $PSScriptRoot + $DirectorySeparator + $ModuleName + '.psd1'
-$CurrentManifest = Test-ModuleManifest -Path $ModuleManifest
 
 # get public functions from .ps1 files in module's private subfolder...
 $PrivateFunctionsPath = $PSScriptRoot + $DirectorySeparator + 'Private'
@@ -50,29 +49,10 @@ $PublicFunctions | ForEach-Object {
     }
 }
 
-# update the manifest's values for 'AliasesToExport' and 'FunctionsToExport'...
-$PublicFunctionsAdded = $PublicFunctions | Where-Object {$_.BaseName -notin $CurrentManifest.ExportedFunctions.Keys}
-$PublicFunctionsRemoved = $CurrentManifest.ExportedFunctions.Keys | Where-Object {$_ -notin $PublicFunctions.BaseName}
-$PublicAliasesAdded = $PublicAliases | Where-Object {$_ -notin $CurrentManifest.ExportedAliases.Keys}
-$PublicAliasesRemoved = $CurrentManifest.ExportedAliases.Keys | Where-Object {$_ -notin $PublicAliases}
-if ($PublicFunctionsAdded -or $PublicFunctionsRemoved -or $PublicAliasesAdded -or $PublicAliasesRemoved) {
-    try {
-        $UpdateModuleManifestParams = @{}
-        $UpdateModuleManifestParams.Add('Path', $ModuleManifest)
-        $UpdateModuleManifestParams.Add('ErrorAction', 'Stop')
-        if ($PublicAliases.Count -gt 0) { $UpdateModuleManifestParams.Add('AliasesToExport', $PublicAliases) }
-        if ($PublicFunctions.Count -gt 0) { $UpdateModuleManifestParams.Add('FunctionsToExport', $PublicFunctions.BaseName) }
-        Update-ModuleManifest @updateModuleManifestParams
-    }
-    catch {
-        $_ | Write-Error
-    }
-}
-
 # complete importing module: set window title and output info message to console...
 $ModuleManifestHashTable = Import-PowerShellDataFile -Path $ModuleManifest
 try {$host.UI.RawUI.WindowTitle="$ModuleName $($ModuleManifestHashTable.ModuleVersion)"}
-catch {}
+catch {Write-Error}
 $ModuleImportMessage=@"
 PowerShell module '$ModuleName' version $($ModuleManifestHashTable.ModuleVersion). Developed and maintained by $($ModuleManifestHashTable.Author).
 This module is licensed under the following conditions: $($($($ModuleManifestHashTable.PrivateData).PSData).LicenseUri).
