@@ -135,13 +135,13 @@ PrivateData = @{
         LicenseUri = 'https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12'
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform'
+        ProjectUri = 'https://github.com/uplink-systems/powershell-modules/tree/main/UplinkSystems.Terraform'
 
         # A URL to an icon representing this module.
         # IconUri = ''
 
         # ReleaseNotes of this module
-        # ReleaseNotes = ''
+        ReleaseNotes = 'https://github.com/uplink-systems/powershell-modules/tree/main/UplinkSystems.Terraform/README.md'
 
         # Prerelease string of this module
         # Prerelease = ''
