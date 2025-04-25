@@ -9,7 +9,6 @@ on:
         type: choice
         options:
           - UplinkSystems.Terraform
-          - UplinkSystems.Tools
 
 jobs:
     build:
