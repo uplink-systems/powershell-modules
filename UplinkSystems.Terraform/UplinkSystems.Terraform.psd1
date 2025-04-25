@@ -138,7 +138,7 @@ PrivateData = @{
         ProjectUri = 'https://github.com/uplink-systems/powershell-modules/tree/main/UplinkSystems.Terraform'
 
         # A URL to an icon representing this module.
-        # IconUri = ''
+        IconUri = 'https://github.com/uplink-systems/.github/blob/main/images/logo.png'
 
         # ReleaseNotes of this module
         ReleaseNotes = 'https://github.com/uplink-systems/powershell-modules/tree/main/UplinkSystems.Terraform/README.md'

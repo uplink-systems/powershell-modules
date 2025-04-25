@@ -1,0 +1,25 @@
+name: Publish module to PowerShell Gallery
+
+on:
+  workflow_dispatch:
+    inputs:
+      module:
+        description: Select module to publish to PowerShell Gallery
+        required: true
+        type: choice
+        options:
+          - UplinkSystems.Terraform
+          - UplinkSystems.Tools
+
+jobs:
+    build:
+        name: Publish module to PowerShell Gallery
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - name: Run publishing script
+              env:
+                ModuleName: ${{github.event.inputs.module}}
+                NuGetApiKey: ${{secrets.APIKEY_PSGALLERY}}
+              run: .\publish-module.ps1
+              shell: pwsh
