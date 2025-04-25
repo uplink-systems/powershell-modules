@@ -43,19 +43,20 @@ function Invoke-TerraformApply {
 	}
 	process {
 		Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
+		if ($Lock) {$LockOption = "-lock=true"} else {$LockOption = "-lock=false"}
 		if ($Out -and (Test-Path -Path $OutFile)) {
 			Write-Host -Object "-> Applying changes using plan file...`n" -ForegroundColor DarkGray
 			if ($AutoApprove) {
-				Start-Process -FilePath "terraform.exe" -ArgumentList "apply $OutFile -lock=$($Lock.ToString()) -auto-approve" -NoNewWindow -PassThru -Wait | Out-Null
+				Start-Process -FilePath "terraform.exe" -ArgumentList "apply $OutFile -lock=$LockOption -auto-approve" -NoNewWindow -PassThru -Wait | Out-Null
 			} else {
-				Start-Process -FilePath "terraform.exe" -ArgumentList "apply $OutFile -lock=$($Lock.ToString())" -NoNewWindow -PassThru -Wait | Out-Null
+				Start-Process -FilePath "terraform.exe" -ArgumentList "apply $OutFile -lock=$LockOption" -NoNewWindow -PassThru -Wait | Out-Null
 			}
 		} else {
 			Write-Host -Object "-> Applying changes...`n" -ForegroundColor DarkGray
 			if ($AutoApprove) {
-				Start-Process -FilePath "terraform.exe" -ArgumentList "apply -lock=$($Lock.ToString()) -auto-approve" -NoNewWindow -PassThru -Wait | Out-Null
+				Start-Process -FilePath "terraform.exe" -ArgumentList "apply -lock=$LockOption -auto-approve" -NoNewWindow -PassThru -Wait | Out-Null
 			} else {
-				Start-Process -FilePath "terraform.exe" -ArgumentList "apply -lock=$($Lock.ToString())" -NoNewWindow -PassThru -Wait | Out-Null
+				Start-Process -FilePath "terraform.exe" -ArgumentList "apply -lock=$LockOption" -NoNewWindow -PassThru -Wait | Out-Null
 			}
 		}
 	}
