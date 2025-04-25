@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       module:
-        description: Select module to publish to PowerShell Gallery
+        description: Select module to publish
         required: true
         type: choice
         options:
