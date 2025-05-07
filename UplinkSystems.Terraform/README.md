@@ -17,6 +17,9 @@ The module **UplinkSystems.Terraform** provides PowerShell functions to manage T
 * <code>Test-TerraformRequirement</code>
   
 For detailed information about each functions options please refer to each function's comment based help.  
+  
+Please note:  
+The module is currently intended to run on Windows operating systems only.  
 
 ### Requirements
 
