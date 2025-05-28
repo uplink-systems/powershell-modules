@@ -29,6 +29,11 @@ The module is currently intended to run on Windows operating systems only.
 
 ### Release Notes
 
+#### 1.0.2
+
+BUG FIX:  
+* <code>Install-TerraformApplication</code>: changed method to add Terraform installation path to PATH environment variable as previous method was not persistent.
+
 #### 1.0.1
 
 BUG FIX:  

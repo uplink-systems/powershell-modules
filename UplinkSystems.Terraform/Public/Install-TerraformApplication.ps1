@@ -6,10 +6,11 @@ function Install-TerraformApplication {
 		The function installs the Terraform application to the local system (Windows x64 version
         only). It checks HashiCorps' GitHub repository for the latest release number (tag) and
         downloads the 64 bit version for Windows from HashiCorp's release site. After that the
-        script expands the archive and moves the application to program files directory. The
-        function depends on HashiCorp maintaining its current naming convention.
+        script expands the archive, moves the application to program files directory and adds
+        the installation path to the system's PATH environment variable. The function depends on 
+        HashiCorp maintaining its current naming convention.
         .PARAMETER WorkingDir [System.IO.FileInfo]
-        The optional parameter $WorkDir specifies the directory to download the archive to
+        The optional parameter $WorkingDir specifies the directory to download the archive to
         and to expand the archive to.
         Default: $ENV:TEMP
         .PARAMETER DebugEnabled [Switch]
@@ -27,7 +28,7 @@ function Install-TerraformApplication {
     [CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
 	[Alias("Install-TfApplication")]
     param(
-        [Parameter(Mandatory=$false)] [System.IO.FileInfo] $WorkDir = $ENV:TEMP,
+        [Parameter(Mandatory=$false)] [System.IO.FileInfo] $WorkingDir = $ENV:TEMP,
         [Parameter(Mandatory=$false)] [System.IO.FileInfo] $InstallDir = (Join-Path -Path $ENV:ProgramFiles -ChildPath "Terraform"),
         [Parameter()] [switch] $DebugEnabled
     )
@@ -36,16 +37,16 @@ function Install-TerraformApplication {
         $VersionNumber = ((Invoke-RestMethod -Method GET -Uri "https://api.github.com/repos/hashicorp/terraform/releases/latest" -ErrorAction Stop).tag_name).SubString(1)
         $WebRequestUri = "https://releases.hashicorp.com/terraform/$($VersionNumber)/terraform_$($VersionNumber)_windows_amd64.zip"
         $ArchiveFile = "terraform_$($VersionNumber)_windows_amd64.zip"
-        $ArchiveFilePath = Join-Path -Path $WorkDir -ChildPath $ArchiveFile
-        $ArchiveExpandDir = Join-Path -Path $WorkDir -ChildPath "Terraform"
+        $ArchiveFilePath = Join-Path -Path $WorkingDir -ChildPath $ArchiveFile
+        $ArchiveExpandDir = Join-Path -Path $WorkingDir -ChildPath "Terraform"
         $ArchiveExpandFilePath = Join-Path -Path $ArchiveExpandDir -ChildPath "*"
     }
     process {
         if ($DebugEnabled.IsPresent) {
             Write-Host -Object "NOTE: debug mode is enabled... writing debug messages to console..." -ForegroundColor Yellow
         }
-        if (Test-Path -Path $WorkDir) {
-            Set-Location -Path $WorkDir
+        if (Test-Path -Path $WorkingDir) {
+            Set-Location -Path $WorkingDir
         } else {
             Write-Host "Directory specified in WorkingDir parameter not found. Please restart Terraform installation with a valid WorkingDir parameter." -ForegroundColor Red
             Start-Sleep -Seconds 2
@@ -63,7 +64,7 @@ function Install-TerraformApplication {
             Start-Sleep -Seconds 2
         }
         catch {
-            Write-Host -Object "Failed... " -ForegroundColor Red
+            Write-Host -Object "Failed..." -ForegroundColor Red
             if ($DebugEnabled) {Write-Host -Object "Exception info: $($Error[0].exception.GetType().fullname)..." -ForegroundColor DarkGray}
             Start-Sleep -Seconds 2
             return
@@ -86,12 +87,30 @@ function Install-TerraformApplication {
                 New-Item -Path $InstallDir -ItemType Directory
             }
             Copy-Item -Path $ArchiveExpandFilePath -Destination $InstallDir -Recurse -Force -ErrorAction Stop
-            if (-not($ENV:Path -Split ';' | Where-Object {$_ -like "*Terraform*"})) {$ENV:Path += $InstallDir}
             Write-Host -Object "Success..." -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
         catch {
-            Write-Host -Object "Failed... " -ForegroundColor Red
+            Write-Host -Object "Failed..." -ForegroundColor Red
+            if ($DebugEnabled) {Write-Host -Object "Exception info: $($Error[0].exception.GetType().fullname)..." -ForegroundColor DarkGray}
+            Start-Sleep -Seconds 2
+            return
+        }
+        try {
+            Write-Host -Object "Adding Terraform path to PATH environment variable... " -ForegroundColor DarkGray -NoNewline
+            $GetEnvPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+            if ($GetEnvPath -notlike "*$InstallDir*") {
+                $SetEnvPath = "$GetEnvPath;$InstallDir"
+                [System.Environment]::SetEnvironmentVariable("Path", $SetEnvPath, [System.EnvironmentVariableTarget]::Machine)
+                Write-Host -Object "Success..." -ForegroundColor Green
+                Start-Sleep -Seconds 2
+            } else {
+                Write-Host -Object "Skipped, already existing..." -ForegroundColor DarkGray
+                Start-Sleep -Seconds 2
+            }
+        }
+        catch {
+            Write-Host -Object "Failed..." -ForegroundColor Red
             if ($DebugEnabled) {Write-Host -Object "Exception info: $($Error[0].exception.GetType().fullname)..." -ForegroundColor DarkGray}
             Start-Sleep -Seconds 2
             return
