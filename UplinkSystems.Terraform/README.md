@@ -32,7 +32,7 @@ The module is currently intended to run on Windows operating systems only.
 #### 1.0.3
 
 BUG FIX:  
-* <code>UplinkSystems.Terraform.psm</code>: resized module logo and removed window/buffer size configuration for better host compatibility.
+* <code>UplinkSystems.Terraform.psm</code>: resized module logo and removed window/buffer size configuration for better host compatibility and to fix terminating errors on import with Windows 11 in some cases.
 
 #### 1.0.2
 
