@@ -1,22 +1,10 @@
-# configure terminal window size to match requirements for logo and message
-$PsWindow = (Get-Host).UI.RawUI         # Get the PowerShell Host's UI.
-$NewBufferSize = $PsWindow.BufferSize   # Get the UI's current Buffer Size.
-$NewBufferSize.Width = 150              # Set the new buffer's width to 150 columns.
-$NewBufferSize.Height = 100             # Set the new buffer's height to 100 lines.
-$PsWindow.BufferSize = $NewBufferSize   # Set the new Buffer Size as active.
-$NewWindowSize = $PsWindow.WindowSize   # Get the UI's current Window Size.
-$NewWindowSize.Width = 150              # Set the new Window width to 150 columns.
-$NewWindowSize.Height = 50              # Set the new Window height to 50 lines.
-$PsWindow.WindowSize = $NewWindowSize   # Set the new Window Size as active.
-
 # start importing module: create logo and output to console...
 $ModuleImportLogo=@"
-
-    ___   ___ _______ ___    ____ __  ___ ____ ___      ________ ___   ____ _______ _________ _______ ___  ____   ________
-   /  /  /  /   __   /  /   /   /   |/   /   /   /     /  _____/   /  /   /  _____/__    ___/   ____/    |/    | /  _____/
-  /  /  /  /   /_/  /  /   /   /    |   /       /     /____   /   /__/   /____      /   /  /   __/ /     |     |/____
- /  /__/  /   _____/  /___/   /   |    /   |   |     _____/  /___    ___/____/  /  /   /  /   /___/   |    |   |____/  /
-/________/___/    /______/___/___/|___/___/|___|    /_______/   /___/  /_______/  /___/  /_______/___/|___/|___|______/
+    ___   ___ ______ ___    ___ _  __ ___ __      ________ __   ___ _______ ________ ______ __  ___   ________
+   /  /  /  /  __   /  /   /  /  |/  /  /  /     /  _____/  /  /  /  _____/__   ___/  ____/   |/   | /  _____/
+  /  /  /  /  /_/  /  /   /  /   |  /     /     /____   /  /__/  /____      /  /  /  __/ /    |    |/____
+ /  /__/  /  _____/  /___/  /  |   /  |  |     _____/  /__    __/____/  /  /  /  /  /___/  |    |  |____/  /
+/________/__/    /______/__/__/|__/__/|__|    /_______/  /___/ /_______/  /__/  /______/__/|___/|__|______/
 
 "@
 Write-Host -Object $ModuleImportLogo -ForegroundColor Cyan
