@@ -5,13 +5,15 @@ function Test-TerraformRequirement {
 		.DESCRIPTION
 		The function validates if all requirements for Terraform to run are fullfilled:
 		- Is a terraform.exe process currently active/running?
-		- Is the application path in the %path% variable?
+		- Is the application path in the %PATH% environment variable?
 		- Is terraform.exe located in the application path?
-		- Is terraform.exe version supported? This is currently inactive as HashiCorp does not provide version info in the file yet.
+		- Is terraform.exe version supported by the module?
 	#>
 	[CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
 	[Alias("Test-TfRequirement")]
-	param()
+	param(
+		[Parameter(Mandatory=$false)] [string] $MinTerraformVersion = "1.12.0"
+	)
 	begin {
 		$ErrorActionPreference = 'SilentlyContinue'
 		Write-Host -Object "`nValidating Terraform requirements... " -ForegroundColor DarkGray -NoNewline
@@ -20,30 +22,31 @@ function Test-TerraformRequirement {
 	process {
 		if (Get-Process | Where-Object {$_.ProcessName -eq "terraform.exe"}) {
 			Write-Host -Object "Failed...: " -ForegroundColor Red -NoNewline
-			Write-Host -Object "Running Terraform application found; please stop all related terraform.exe processes...`n" -ForegroundColor DarkGray
+			Write-Host -Object "Running Terraform application found; please stop all active terraform.exe processes...`n" -ForegroundColor DarkGray
 			Start-Sleep -Seconds 2
 			exit 1
 		}
-		$TerraformPath = $env:Path -Split ';' | Where-Object { $_ -like "*Terraform*"}
+		$TerraformPath = $env:PATH -Split ';' | Where-Object {$_ -like "*Terraform*"}
 		if (-not($TerraformPath)) {
 			Write-Host -Object "Failed...: " -ForegroundColor Red -NoNewline
-			Write-Host -Object "Terraform path not found in path variable...`n" -ForegroundColor DarkGray
+			Write-Host -Object "No Terraform path found in PATH environment variable...`n" -ForegroundColor DarkGray
 			Start-Sleep -Seconds 2
 			exit 1
 		}
-		if (-not(Test-Path -Path "$($TerraformPath)\terraform.exe")) {
+		if (-not(Test-Path -Path $(Join-Path -Path $TerraformPath -ChildPath "terraform.exe"))) {
 			Write-Host -Object "Failed...: " -ForegroundColor Red -NoNewline
-			Write-Host -Object "Terraform executable not found in path variable's folder $($TerraformPath)...`n" -ForegroundColor DarkGray
+			Write-Host -Object "No Terraform executable found in PATH environment variable's folder $($TerraformPath)...`n" -ForegroundColor DarkGray
 			Start-Sleep -Seconds 2
 			exit 1
 		}
-		# if (-not((Get-Item "$($TerraformPath)\terraform.exe").VersionInfo.FileVersion -gt "1.10")) {
-		# 	Write-Host -Object "Failed...: " -ForegroundColor Red
-		# 	Write-Host -Object "Terraform executable version not supported...`n" -ForegroundColor DarkGray
-		#   Start-Sleep -Seconds 2
-		# 	exit 1
-		# }
+		if (-not([Version]($(Get-TerraformVersionInstalled)[1]) -ge [Version]$MinTerraformVersion)) {
+			Write-Host -Object "Failed...: " -ForegroundColor Red
+			Write-Host -Object "Minimum Terraform executable version ($MinTerraformVersion) not installed...`n" -ForegroundColor DarkGray
+			Start-Sleep -Seconds 2
+			exit 1
+		}
 		Write-Host -Object "Success... " -ForegroundColor Green
 	}
 	end {}
 }
+

@@ -12,7 +12,7 @@
 RootModule = 'UplinkSystems.Terraform.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.3'
+ModuleVersion = '1.1.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -69,7 +69,7 @@ PowerShellVersion = '7.0'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Install-TerraformApplication',
+FunctionsToExport = 'Install-Terraform',
                     'Invoke-TerraformApply',
                     'Invoke-TerraformCustom',
                     'Invoke-TerraformDestroy',
@@ -79,7 +79,8 @@ FunctionsToExport = 'Install-TerraformApplication',
                     'Invoke-TerraformValidate',
                     'Invoke-TerraformWorkingDirectoryCleanup',
                     'Set-TerraformEnvironmentVariable',
-                    'Test-TerraformRequirement'
+                    'Test-TerraformRequirement',
+                    'Uninstall-Terraform'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -88,7 +89,7 @@ CmdletsToExport = @()
 # VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport =   'Install-TfApplication',
+AliasesToExport =   'Install-Tf',
                     'Invoke-TfApply',
                     'Invoke-TfCustom',
                     'Invoke-TfDestroy',
@@ -98,7 +99,8 @@ AliasesToExport =   'Install-TfApplication',
                     'Invoke-TfValidate',
                     'Invoke-TfWorkingDirCleanup',
                     'Set-TfEnvironmentVariable',
-                    'Test-TfRequirement'
+                    'Test-TfRequirement',
+                    'Uninstall-Tf'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
@@ -109,7 +111,7 @@ AliasesToExport =   'Install-TfApplication',
 # List of all files packaged with this module
 FileList =          'UplinkSystems.Terraform.psd1',
                     'UplinkSystems.Terraform.psm1',
-                    'Public\Install-TerraformApplication.ps1',
+                    'Public\Install-Terraform.ps1',
                     'Public\Invoke-TerraformApply.ps1',
                     'Public\Invoke-TerraformCustom.ps1',
                     'Public\Invoke-TerraformDestroy.ps1',
@@ -120,6 +122,10 @@ FileList =          'UplinkSystems.Terraform.psd1',
                     'Public\Invoke-TerraformWorkingDirectoryCleanup.ps1',
                     'Public\Set-TerraformEnvironmentVariable.ps1',
                     'Public\Test-TerraformRequirement.ps1',
+                    'Public\Uninstall-Terraform.ps1',
+                    'Private\Compare-TerraformVersion.ps1',
+                    'Private\Get-TerraformVersionAvailable.ps1',
+                    'Private\Get-TerraformVersionInstalled.ps1',
                     'Private\Test-TerraformRunningAsAdmin.ps1',
                     'Private\Test-TerraformWorkingDirectory.ps1'
 
@@ -138,7 +144,7 @@ PrivateData = @{
         ProjectUri = 'https://github.com/uplink-systems/powershell-modules/tree/main/UplinkSystems.Terraform'
 
         # A URL to an icon representing this module.
-        IconUri = 'https://github.com/uplink-systems/.github/blob/main/images/logo.png'
+        # IconUri = ''
 
         # ReleaseNotes of this module
         ReleaseNotes = 'https://github.com/uplink-systems/powershell-modules/tree/main/UplinkSystems.Terraform/README.md'

@@ -2,9 +2,13 @@
 
 ### Description
 
-The module **UplinkSystems.Terraform** provides PowerShell functions to manage Terraform projects from PowerShell scripts where no DevOps pipelining is available for automation. To achieve this goal the module contains the following public functions that can be used with its parameters to automate Terraform project commands:  
+The module **UplinkSystems.Terraform** provides PowerShell functions for the following tasks:
+* manage installation of Terraform executable where no software distribution or package manager like MECM or Chocolatey is available  
+* manage Terraform projects from PowerShell scripts where no Azure DevOps pipelining or GitHub Actions is available for automation  
   
-* <code>Install-TerraformApplication</code>
+To achieve this goal the module contains the following public functions that can be used with its parameters to automate Terraform project commands:  
+  
+* <code>Install-Terraform</code>
 * <code>Invoke-TerraformApply</code>
 * <code>Invoke-TerraformCustom</code>
 * <code>Invoke-TerraformDestroy</code>
@@ -15,6 +19,7 @@ The module **UplinkSystems.Terraform** provides PowerShell functions to manage T
 * <code>Invoke-TerraformWorkingDirectoryCleanup</code>
 * <code>Set-TerraformEnvironmentVariable</code>
 * <code>Test-TerraformRequirement</code>
+* <code>Uninstall-Terraform</code>
   
 For detailed information about each functions options please refer to each function's comment based help.  
   
@@ -29,10 +34,28 @@ The module is currently intended to run on Windows operating systems only.
 
 ### Release Notes
 
+#### 1.1.0
+
+BREAKING CHANGES:  
+* Existing function <code>Install-TerraformApplication</code> changed to <code>Install-Terraform</code>.
+
+NEW FEATURES:  
+* New module function: <code>Uninstall-Terraform</code>
+* New module private function: <code>Compare-TerraformVersion</code>
+* New module private function: <code>Get-TerraformVersionAvailable</code>
+* New module private function: <code>Get-TerraformVersionInstalled</code>
+
+IMPROVEMENTS:
+* <code>Install-Terraform</code>: improved pre-check order.
+* <code>Install-Terraform</code>: added -Update switch to select to update existing Terraform installation.
+* <code>Install-Terraform</code>: changed RunAsAdmin detection method from direct code to <code>Test-TerraformRunningAsAdmin</code> private function.
+* <code>Install-Terraform</code>: changed online available Terraform version detection from direct code to new <code>Get-TerraformVersionAvailable</code> private function.
+* <code>Test-TerraformRequirement</code>: added module's minimum Terraform version number validation; the minimum version has a default value matching the latest tested version (currently "1.12.0") but can be configured by passing a differnt value for the $MinTerraformVersion parameter.
+
 #### 1.0.3
 
 BUG FIX:  
-* <code>UplinkSystems.Terraform.psm</code>: resized module logo and removed window/buffer size configuration for better host compatibility and to fix terminating errors on import with Windows 11 in some cases.
+* <code>UplinkSystems.Terraform.psm1</code>: resized module logo and removed window/buffer size configuration for better host compatibility and to fix terminating errors on import with Windows 11 in some cases.
 
 #### 1.0.2
 
@@ -61,3 +84,5 @@ FEATURES:
 * New module function: <code>Invoke-TerraformWorkingDirectoryCleanup</code>
 * New module function: <code>Set-TerraformEnvironmentVariable</code>
 * New module function: <code>Test-TerraformRequirement</code>
+* New module private function: <code>Test-TerraformRunningAsAdmin</code>
+* New module private function: <code>Test-TerraformWorkingDirectory</code>
