@@ -84,7 +84,7 @@ function Install-Terraform {
                 }
             }
         }
-        $VersionNumber = Get-TerraformVersionAvailable -Latest
+        $VersionNumber = Get-TerraformVersionAvailable
         $WebRequestUri = "https://releases.hashicorp.com/terraform/$($VersionNumber)/terraform_$($VersionNumber)_windows_amd64.zip"
         $ArchiveFile = "terraform_$($VersionNumber)_windows_amd64.zip"
         $ArchiveFilePath = Join-Path -Path $WorkingDir -ChildPath $ArchiveFile

@@ -34,6 +34,11 @@ The module is currently intended to run on Windows operating systems only.
 
 ### Release Notes
 
+#### 1.1.1
+
+BUG FIX:  
+* <code>Install-Terraform.ps1</code>: fixed a bug where available Terraform version could not be detected cause by a faulty parameter.  
+
 #### 1.1.0
 
 BREAKING CHANGES:  
