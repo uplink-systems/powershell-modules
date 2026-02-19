@@ -1,14 +1,3 @@
-# configure terminal window size to match requirements for logo and message
-$PsWindow = (Get-Host).UI.RawUI         # Get the PowerShell Host's UI.
-$NewBufferSize = $PsWindow.BufferSize   # Get the UI's current Buffer Size.
-$NewBufferSize.Width = 150              # Set the new buffer's width to 150 columns.
-$NewBufferSize.Height = 100             # Set the new buffer's height to 100 lines.
-$PsWindow.BufferSize = $NewBufferSize   # Set the new Buffer Size as active.
-$NewWindowSize = $PsWindow.WindowSize   # Get the UI's current Window Size.
-$NewWindowSize.Width = 150              # Set the new Window width to 150 columns.
-$NewWindowSize.Height = 50              # Set the new Window height to 50 lines.
-$PsWindow.WindowSize = $NewWindowSize   # Set the new Window Size as active.
-
 # start importing module: create logo and output to console...
 $ModuleImportLogo=@"
 
@@ -19,7 +8,7 @@ $ModuleImportLogo=@"
 /________/___/    /______/___/___/|___/___/|___|    /_______/   /___/  /_______/  /___/  /_______/___/|___/|___|______/
 
 "@
-Write-Host -Object $ModuleImportLogo -ForegroundColor Cyan
+Write-Host -Object $ModuleImportLogo -ForegroundColor Blue
 
 # set variables for public and private function import...
 $DirectorySeparator = [System.IO.Path]::DirectorySeparatorChar
@@ -51,12 +40,11 @@ $PublicFunctions | ForEach-Object {
 
 # complete importing module: set window title and output info message to console...
 $ModuleManifestHashTable = Import-PowerShellDataFile -Path $ModuleManifest
-try {$host.UI.RawUI.WindowTitle="$ModuleName $($ModuleManifestHashTable.ModuleVersion)"}
-catch {Write-Error}
+try {$Host.UI.RawUI.WindowTitle="$ModuleName $($ModuleManifestHashTable.ModuleVersion)"}
+catch {}
 $ModuleImportMessage=@"
 PowerShell module '$ModuleName' version $($ModuleManifestHashTable.ModuleVersion). Developed and maintained by $($ModuleManifestHashTable.Author).
-This module is licensed under the following conditions: $($($($ModuleManifestHashTable.PrivateData).PSData).LicenseUri).
+This module is licensed under the following conditions: $($($($ModuleManifestHashTable.PrivateData).PSData).LicenseUri).`n
 "@
-# write composed logo and message to console...
+# write composed message to console...
 Write-Host -Object $ModuleImportMessage -ForegroundColor DarkGray
-Write-Host

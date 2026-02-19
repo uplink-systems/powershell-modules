@@ -18,45 +18,53 @@ function Get-EntraCustomDomainDnsRecordSet {
         - SharePointPublic service configuration (retired)
         - Yammer service configuration (retired)
         .PARAMETER Domain [String]
-        The string $Domain represents the FQDN of the domain to query
+        The mandator parameter -Domain represents the FQDN of the domain to query
         .PARAMETER VerificationDnsRecordOnly [Switch]
-        The optional switch $VerificationDnsRecordOnly limits the query to the domain verification
+        The optional parameter -VerificationDnsRecordOnly limits the query to the domain verification
         TXT record set only (Get-MgDomainVerificationDnsRecord) and skips the service record sets.
         If both switches, $VerificationDnsRecordOnly and $ServiceConfigurationOnly, are set to $true,
         the function returns $null values.
+        Alias: VerificationDns
         .PARAMETER ServiceConfigurationRecordsOnly [Switch]
-        The optional switch $ServiceConfigurationRecordsOnly limits the query to the domain service
+        The optional parameter -ServiceConfigurationRecordsOnly limits the query to the domain service
         record sets (Get-MgDomainServiceConfigurationRecord) and skips the domain verification TXT
         record set. If both switches, $VerificationDnsRecordOnly and $ServiceConfigurationOnly, are
         set to $true, the function returns $null values.
+        Alias: ServiceConfig
         .OUTPUTS
         System.Array
+        .COMPONENT
+        Microsoft.Graph
         .NOTES
-        The function requires the Microsoft Graph SDK PowerShell module to work as well as an 
-        authenticated MgGraph session with at least "Domain.Read.All" scope. The function validates 
-        required scopes and initiates a new MgGraph connection if current scopes are insufficient.
+        The function requires an authenticated MgGraph session with at least "Domain.ReadWrite.All"
+        scope to work.
+        The function validates required scopes and initiates a new MgGraph connection if current
+        scopes are insufficient.
         .EXAMPLE
         Get-EntraCustomDomainDnsRecordSet -Domain "company.org"
         .EXAMPLE
         Get-CustomDomainDnsRecordSet "company.org" -ServiceConfigurationRecordsOnly
         .EXAMPLE
         Get-EntraCustomDomainDnsRecordSet "company.org" -VerificationDnsRecordOnly
+        .EXAMPLE
+        (Get-MgDomain | Where-object {$_.IsVerified -ne $true}).id | Get-EntraCustomDomainDnsRecordSet -VerificationDnsRecordOnly
     #>
 
     [CmdletBinding(PositionalBinding=$false,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud")]
     [Alias("Get-CustomDomainDnsRecordSet")]
 
     param(
-        [Parameter(Mandatory=$true, Position=0)] [String] $Domain,
-        [Parameter(Mandatory=$false)] [Switch] $VerificationDnsRecordOnly,
-        [Parameter(Mandatory=$false)] [Switch] $ServiceConfigurationRecordsOnly
+        [Parameter(Mandatory=$true,Position=0,ValueFromPipeline=$true)] [String] $Domain,
+        [Parameter(Mandatory=$false)] [Alias("VerificationDns")] [Switch] $VerificationDnsRecordOnly,
+        [Parameter(Mandatory=$false)] [Alias("ServiceConfig")] [Switch] $ServiceConfigurationRecordsOnly
     )
 
     begin {
+        [Array]$Preferences = $ErrorActionPreference,$InformationPreference
+        $ErrorActionPreference = 'SilentlyContinue'
         $MgGraphScopes = "Domain.ReadWrite.All"
         if (-not(Confirm-MgGraphScopeInContextScopes -Scopes $MgGraphScopes)) {Connect-MgGraph -Scopes $MgGraphScopes -NoWelcome}
     }
-
     process {
         $DomainVerificationDnsRecords = Get-MgDomainVerificationDnsRecord -DomainId $Domain
         $DomainServiceConfigurationRecords = Get-MgDomainServiceConfigurationRecord -DomainId $Domain
@@ -101,10 +109,11 @@ function Get-EntraCustomDomainDnsRecordSet {
                 | ForEach-Object { New-Object object | Add-Member -NotePropertyMembers $_ -PassThru
             }
         }
+        Write-Output -InputObject $DomainDnsRecords
     }
 
     end {
-        Write-Output -InputObject $DomainDnsRecords
+        $ErrorActionPreference = $Preferences[0]
         return
     }
     

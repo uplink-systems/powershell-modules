@@ -12,7 +12,7 @@
 RootModule = 'UplinkSystems.Microsoft.Cloud.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.0'
+ModuleVersion = '1.1.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -27,7 +27,7 @@ Author = 'Andreas Schreiner'
 CompanyName = 'Andreas Schreiner IT Services'
 
 # Copyright statement for this module
-Copyright = '(c) 2025 Andreas Schreiner IT Services, All rights reserved.'
+Copyright = '© 2025 Andreas Schreiner IT Services, All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'Uplink Systems Microsoft Cloud Module'
@@ -76,8 +76,12 @@ FunctionsToExport = 'Confirm-EntraCustomDomain',
                     'Enable-MsCommerceSelfServicePurchase',
                     'Get-EntraCustomDomainDnsRecordSet',
                     'Get-EntraTenantId',
+                    'Get-SPOPersonalSiteUrlList',
                     'New-EntraCustomDomain',
-                    'Set-PurviewSensitivityLabelLocale'
+                    'New-SPOCrossTenantPartnerRelationship',
+                    'Remove-SPOPersonalSite',
+                    'Set-PurviewSensitivityLabelLocale',
+                    'Update-OneDriveClientOrganizationNameRegistryKey'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -89,12 +93,20 @@ CmdletsToExport = @()
 AliasesToExport =   'Confirm-CustomDomain',
                     'Confirm-UserRoleAssignment',
                     'Confirm-MgGraphScope',
+                    'Delete-SPOPersonalSite',
                     'Disable-SelfServicePurchase',
                     'Enable-SelfServicePurchase',
+                    'Export-SPOOneDriveSiteUrlList',
+                    'Export-SPOPersonalSiteUrlList',
                     'Get-CustomDomainDnsRecordSet',
+                    'Get-SPOOneDriveSiteUrlList',
                     'Get-TenantId',
                     'New-CustomDomain',
-                    'Set-SensitivityLabelLocale'
+                    'New-SPOCTPartner',
+                    'Out-SPOPersonalSiteUrlList',
+                    'Out-SPOOneDriveSiteUrlList',
+                    'Set-SensitivityLabelLocale',
+                    'Update-OneDriveClientOrgNameRegKey'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
@@ -105,6 +117,9 @@ AliasesToExport =   'Confirm-CustomDomain',
 # List of all files packaged with this module
 FileList =          'UplinkSystems.Microsoft.Cloud.psd1',
                     'UplinkSystems.Microsoft.Cloud.psm1',
+                    'README.md',
+                    'Private\Initialize-Module.ps1',
+                    'Private\Write-Message.ps1',
                     'Public\Confirm-EntraCustomDomain.ps1',
                     'Public\Confirm-EntraUserRoleAssignment.ps1',
                     'Public\Confirm-MgGraphScopeInContextScopes.ps1',
@@ -112,9 +127,12 @@ FileList =          'UplinkSystems.Microsoft.Cloud.psd1',
                     'Public\Enable-MsCommerceSelfServicePurchase.ps1',
                     'Public\Get-EntraCustomDomainDnsRecordSet.ps1',
                     'Public\Get-EntraTenantId.ps1',
+                    'Public\Get-SPOPersonalSiteUrlList.ps1',
                     'Public\New-EntraCustomDomain.ps1',
-                    'Public\Set-PurviewSensitivityLabelLocale.ps1'
-
+                    'Public\New-SPOCrossTenantPartnerRelationship.ps1',
+                    'Public\Remove-SPOPersonalSite.ps1',
+                    'Public\Set-PurviewSensitivityLabelLocale.ps1',
+                    'Public\Update-OneDriveClientOrganizationNameRegistryKey.ps1'
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{
