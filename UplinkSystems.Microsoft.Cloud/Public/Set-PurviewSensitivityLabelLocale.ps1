@@ -17,6 +17,12 @@ function Set-PurviewSensitivityLabelLocale {
         .PARAMETER Tooltips [Array]
         The manatory parameter -Tooltips represents the tooltipss of the sensitivity label for each
         configured language.
+        .PARAMETER LocaleSet [Array]
+        The mandatory parameter -LocalSet represents a complete array set for a single sensitivity
+        label locale setting. The parameter is used to to call the function from a pipeline.
+        .PARAMETER Silent [Switch]
+        The optional parameter -Silent suppresses all console messages. Error messages are not 
+        affected by the parameter and are never suppressed.
         .OUTPUTS
         System.Boolean
         .COMPONENT
@@ -26,31 +32,49 @@ function Set-PurviewSensitivityLabelLocale {
         'Connect-ExchangeOnline'.
         .EXAMPLE
         $Name = "P_01"
-        $Languages = "en-us","de-de"
-        $DisplayNames = "Public","Öffentlich"
-        $Tooltips = "Public documents","Öffentliche Dokumente"
+        $Languages = "en-us","de-de","es-es"
+        $DisplayNames = "Public","Öffentlich,"Público"
+        $Tooltips = "Public documents","Öffentliche Dokumente","Documentos públicos"
         Set-PurviewSensitivityLabelLocale -Name $Name -Languages $Languages -DisplayNames $DisplayNames -Tooltips $Tooltips
+        .EXAMPLE
+        $LocaleSets = @(
+            @("P_01",@("en-us","de-de"),@("Public","Öffentlich"),@("Public documents","Öffentliche Dokumente")),
+            @("I_01",@("en-us","de-de"),@("Internal","Intern"),@("Internal documents","Interne Dokumente"))
+        )
+        $LocaleSets | Set-PurviewSensitivityLabelLocale
+        .EXAMPLE
+        [Array]$LocaleSets = (
+            ("P_01",("en-us","de-de"),("Public","Öffentlich"),("Public documents","Öffentliche Dokumente")),
+            ("I_01",("en-us","de-de"),("Internal","Intern"),("Internal documents","Interne Dokumente"))
+        )
+        $LocaleSets | Set-PurviewSensitivityLabelLocale -Silent
     #>
 
-    [CmdletBinding(PositionalBinding=$false,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud")]
-    [Alias("Set-SensitivityLabelLocale")]
+    [CmdletBinding(PositionalBinding=$false,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud')]
+    [Alias('Set-SensitivityLabelLocale')]
 
     param(
-        [Parameter(Mandatory=$true,Position=0)] [String] $Name,         
-        [Parameter(Mandatory=$true)] [Array] $Languages,
-        [Parameter(Mandatory=$true)] [Array] $DisplayNames,
-        [Parameter(Mandatory=$true)] [Array] $Tooltips
+        [Parameter(Mandatory=$true,ParameterSetName='default',Position=0)] [String] $Name,         
+        [Parameter(Mandatory=$true,ParameterSetName='default')] [Array] $Languages,
+        [Parameter(Mandatory=$true,ParameterSetName='default')] [Array] $DisplayNames,
+        [Parameter(Mandatory=$true,ParameterSetName='default')] [Array] $Tooltips,
+        [Parameter(Mandatory=$true,ParameterSetName='pipeline',Position=0,ValueFromPipeline=$true)] [Array] $LocaleSet,
+        [Parameter(Mandatory=$false)] [Switch] $Silent
     )
 
     begin {
         # saving preferences and set custom preferences for the function's runtime
         [Array]$Preferences = $ErrorActionPreference,$InformationPreference
-        $ErrorActionPreference = 'SilentlyContinue'
+        if ($Silent) {$InformationPreference = 'SilentlyContinue'} else {$InformationPreference = 'Continue'}
     }
 
     process {
+        # split $LocaleSet values and configure variable names if pipeline input
+        if ($PSCmdlet.ParameterSetName -eq 'pipeline') {
+            [String]$Name = $LocaleSet[0]; [Array]$Languages = $LocaleSet[1]; [Array]$DisplayNames = $LocaleSet[2]; [Array]$Tooltips = $LocaleSet[3]
+        }
         # verify matching array value counts
-        if (-not(($DisplayNames.Count, $Tooltips.Count -eq $Languages.Count).Count -eq 2)) {return $false}
+        if (-not(($DisplayNames.Count, $Tooltips.Count -eq $Languages.Count).Count -eq 2)) {return $false | Out-Null}
         # build 'displayName' value from $Languages and $DisplayNames array
         $DisplayNameLocaleSettings = [PSCustomObject]@{LocaleKey='displayName';
         Settings=@(
@@ -74,7 +98,7 @@ function Set-PurviewSensitivityLabelLocale {
             Set-Label -Identity $Name -LocaleSettings (ConvertTo-Json $DisplayNameLocaleSettings -Depth 2 -Compress),(ConvertTo-Json $TooltipLocaleSettings -Depth 2 -Compress) -ErrorAction Stop | Out-Null
         }
         catch {
-            return $false
+            return $false | Out-Null
         }
         # verify that label's locale settings contain all new values for 'displayName' and 'tooltip'
         $LabelLocaleSettings = (Get-Label -Identity $Name).LocaleSettings
@@ -85,11 +109,17 @@ function Set-PurviewSensitivityLabelLocale {
         $TooltipsCount = 0
         foreach ($Tooltip in $Tooltips) {if ($LabelLocaleSettings -like "*$($Tooltip)*") {$TooltipsCount = $TooltipsCount + 1}}
         # return depending on verification result (true/false)
-        if (($LanguagesCount -eq $Languages.Count) -and ($DisplayNamesCount -eq $DisplayNames.Count) -and ($TooltipsCount -eq $Tooltips.Count)) {return $true} else {return $false}
+        if (($LanguagesCount -eq $Languages.Count) -and ($DisplayNamesCount -eq $DisplayNames.Count) -and ($TooltipsCount -eq $Tooltips.Count)) {
+            Write-Information -MessageData "INFO: label $Name successfully updated..."
+            return $true | Out-Null
+        }
+        else {
+            return $false | Out-Null
+        }
     }
 
     end {
-        $ErrorActionPreference = $Preferences[0]
+        $InformationPreference = $Preferences[1]
     }
     
 }

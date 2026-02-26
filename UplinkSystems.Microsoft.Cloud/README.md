@@ -8,15 +8,19 @@ The module **UplinkSystems.Microsoft.Cloud** provides PowerShell functions for t
   
 To achieve this goal the module contains the following public functions that can be used with its parameters:  
   
+* <code>Add-EntraApplicationCredential</code>
+* <code>Add-EntraCustomDomain</code>
 * <code>Confirm-EntraCustomDomain</code>
 * <code>Confirm-EntraUserRoleAssignment</code>
 * <code>Confirm-MgGraphScopeInContextScopes</code>
 * <code>Disable-MsCommerceSelfServicePurchase</code>
+* <code>Disconnect-WorkOrSchoolAccount</code>
 * <code>Enable-MsCommerceSelfServicePurchase</code>
 * <code>Get-EntraCustomDomainDnsRecordSet</code>
 * <code>Get-EntraTenantId</code>
 * <code>Get-SPOPersonalSiteUrlList</code>
-* <code>New-EntraCustomDomain</code>
+* <code>New-CrossTenantMigrationAppRegistration</code>
+* <code>New-CrossTenantMigrationTenantPreparation</code>
 * <code>New-SPOCrossTenantPartnerRelationship</code>
 * <code>Remove-SPOPersonalSite</code>
 * <code>Set-PurviewSensitivityLabelLocale</code>
@@ -36,6 +40,23 @@ The module is currently intended to run on Windows operating systems only.
 
 ### Release Notes
 
+#### 1.2.0
+
+BREAKING CHANGES:
+* <code>New-EntraCustomDomain</code> renamed to <code>Add-EntraCustomDomain</code>, but still available as alias
+  
+IMPROVEMENTS:  
+* Comment-based help improvements
+* <code>Set-PurviewSensitivityLabelLocale</code> updated to accept pipeline input
+  
+NEW FEATURES:
+* New module function <code>Add-EntraApplicationCredential</code>
+* New module function <code>New-CrossTenantMigrationAppRegistration</code>
+* New module function <code>New-CrossTenantMigrationTenantPreparation</code>
+* New module private function: <code>Add-CtimExchangeServerPSSession</code>
+* New module private function <code>Write-Message</code>
+* New module private function: <code>Remove-CtimExchangeServerPSSession</code>
+
 #### 1.1.0
 
 IMPROVEMENTS:
@@ -45,10 +66,12 @@ IMPROVEMENTS:
 * <code>New-EntraCustomDomain</code> updated to accept pipeline input
   
 NEW FEATURES:
+* New module function: <code>Disconnect-WorkOrSchoolAccount</code>
 * New module function: <code>Get-SPOPersonalSiteUrlList</code>
 * New module function: <code>New-SPOCrossTenantPartnerRelationship</code>
 * New module function: <code>Remove-SPOPersonalSite</code>
 * New module function: <code>Update-OneDriveClientOrganizationNameRegistryKey</code>
+* New module private function: <code>Convert-SPOUpnToSiteName</code>
 * New module private function: <code>Initialize-Module</code>
 * New module private function: <code>Write-Message</code>
 
@@ -101,6 +124,23 @@ The function <code>New-SPOCrossTenantPartnerRelationship</code> creates a cross-
   
 The function <code>Set-PurviewSensitivityLabelLocale</code> can configure one or multiple locale-specific settings (multilanguage). This is currently not possible to configure using the Purview admin interface. The function configures the display names as well as the tooltips in multilanguage environments.  
   
+*Example using direct parameter input:*  
+```
+$Name = "P_01"
+$Languages = "en-us","de-de","es-es"
+$DisplayNames = "Public","Öffentlich,"Público"
+$Tooltips = "Public documents","Öffentliche Dokumente","Documentos públicos"
+Set-PurviewSensitivityLabelLocale -Name $Name -Languages $Languages -DisplayNames $DisplayNames -Tooltips $Tooltips
+```
+*Example using pipeline input:*  
+```
+[Array]$LabelSets = (
+    ("P_01",("en-us","de-de"),("Public","Öffentlich"),("Public documents","Öffentliche Dokumente")),
+    ("I_01",("en-us","de-de"),("Internal","Intern"),("Internal documents","Interne Dokumente"))
+)
+$LabelSets | Set-PurviewSensitivityLabelLocale
+```
+  
 #### Update-OneDriveClientOrganizationNameRegistryKey
   
 The function <code>Update-OneDriveClientOrganizationNameRegistryKey</code> loops through all HKCU: registry keys, names and values and replaces old OneDrive organization names with new OneDrive organization names.  
@@ -109,4 +149,3 @@ Please use carefully and only execute after switching the account from the old o
 ### Roadmap
   
 * <code>New-SPOCrossTenantPartnerRelationship</code>: implementation of certificate based authentication option
-* public functions' output improvement by using private function <code>Write-Message</code>

@@ -10,12 +10,12 @@ function New-SPOCrossTenantPartnerRelationship {
         .PARAMETER SourceTenantInitialDomain [String]
         The mandatory parameter -SourceTenantInitialDomain configures the name of the
         migration source tenant. The value must be the fully-qualified initial domain
-        name (e.g. "company1.onmicrosoft.com")
+        name (e.g. 'company1.onmicrosoft.com')
         Alias: Source
         .PARAMETER TargetTenantInitialDomain [String]
         The mandatory parameter -TargetTenantInitialDomain configures the name of the
         migration target tenant. The value must be the fully-qualified initial domain
-        name (e.g. "company2.onmicrosoft.com")
+        name (e.g. 'company2.onmicrosoft.com')
         Alias: Tenant
         .OUTPUTS
         System.Boolean
@@ -33,17 +33,17 @@ function New-SPOCrossTenantPartnerRelationship {
         New-SPOCTPartner -Source "company1" -Target "company2"
     #>
 
-    [CmdletBinding(PositionalBinding=$false,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud")]
-    [Alias("New-SPOCTPartner")]
+    [CmdletBinding(PositionalBinding=$false,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud')]
+    [Alias('New-SPOCTPartner')]
 
     param(     
         [Parameter(Mandatory=$true, Position=0)]
-        [Alias("Source")]
-        [ValidateScript({if ($_.EndsWith(".onmicrosoft.com")) {$true} else {throw "Invalid value: `"$_`"."}})]
+        [Alias('Source')]
+        [ValidateScript({if ($_.EndsWith('.onmicrosoft.com')) {$true} else {throw "Invalid value: `"$_`"."}})]
         [String] $SourceTenantInitialDomain,
         [Parameter(Mandatory=$true, Position=1)]
-        [Alias("Target")]
-        [ValidateScript({if ($_.EndsWith(".onmicrosoft.com")) {$true} else {throw "Invalid value: `"$_`"."}})]
+        [Alias('Target')]
+        [ValidateScript({if ($_.EndsWith('.onmicrosoft.com')) {$true} else {throw "Invalid value: `"$_`"."}})]
         [String] $TargetTenantInitialDomain
     )
 

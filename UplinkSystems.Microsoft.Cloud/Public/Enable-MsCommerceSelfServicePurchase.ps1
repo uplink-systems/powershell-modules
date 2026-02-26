@@ -16,8 +16,8 @@ function Enable-MsCommerceSelfServicePurchase {
         Enable-MsCommerceSelfServicePurchase
     #>
 
-    [CmdletBinding(PositionalBinding=$false,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud")]
-    [Alias("Enable-SelfServicePurchase")]
+    [CmdletBinding(PositionalBinding=$false,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud')]
+    [Alias('Enable-SelfServicePurchase')]
     
     param()
 

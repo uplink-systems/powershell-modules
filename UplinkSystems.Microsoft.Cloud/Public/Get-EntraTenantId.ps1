@@ -8,7 +8,8 @@ function Get-EntraTenantId {
         Any tenant's owned domain is allowed to query including the onmicrosoft.com
         default domain
         .PARAMETER Domain [String]
-        The mandatory parameter -Domain represents the domain name to query the Id for.
+        The mandatory parameter -Domain represents the domain name to query the Id
+        for.
         .OUTPUTS
         System.String
         .EXAMPLE
@@ -16,11 +17,11 @@ function Get-EntraTenantId {
         .EXAMPLE
         Get-EntraTenantId company.com
         .EXAMPLE
-        "company.com","business.org" | Get-EntraTenantId
+        'company.com','business.org' | Get-EntraTenantId
     #>
 
-    [CmdletBinding(PositionalBinding=$false,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud")]
-    [Alias("Get-TenantId")]
+    [CmdletBinding(PositionalBinding=$false,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud')]
+    [Alias('Get-TenantId')]
 
     param(
         [Parameter(Mandatory=$true,Position=0,ValueFromPipeline=$true)] [String] $Domain

@@ -45,13 +45,13 @@ function Update-OneDriveClientOrganizationUserRegistryKey {
         Update-OneDriveClientOrgUserRegKey -Source "Company 1 Corp." -Target "Company 2 Inc." -Silent
     #>
 
-    [CmdletBinding(PositionalBinding=$false,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud")]
-    [Alias("Update-OneDriveClientOrgUserRegKey")]
+    [CmdletBinding(PositionalBinding=$false,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud')]
+    [Alias('Update-OneDriveClientOrgUserRegKey')]
 
     param(
-        [Parameter(Mandatory=$true,Position=0)] [Alias("Source")] [String] $SourceOrganizationName,
-        [Parameter(Mandatory=$true,Position=1)] [Alias("Target")] [String] $TargetOrganizationName,
-        [Parameter(Mandatory=$false)] [ValidateSet("CurrentUser","AllUsers")] [String] $Scope = "CurrentUser",
+        [Parameter(Mandatory=$true,Position=0)] [Alias('Source')] [String] $SourceOrganizationName,
+        [Parameter(Mandatory=$true,Position=1)] [Alias('Target')] [String] $TargetOrganizationName,
+        [Parameter(Mandatory=$false)] [ValidateSet('CurrentUser','AllUsers')] [String] $Scope = 'CurrentUser',
         [Parameter(Mandatory=$false)] [Switch] $DryRun,
         [Parameter(Mandatory=$false)] [Switch] $Silent
     )
@@ -62,11 +62,11 @@ function Update-OneDriveClientOrganizationUserRegistryKey {
         Write-Host
         if ($Silent) {$InformationPreference = SilentlyContinue} else {$InformationPreference = Continue}
         switch ($Scope) {
-            "CurrentUser" {
+            'CurrentUser' {
                 $RegItems = Get-ChildItem -ErrorAction SilentlyContinue -Path  "HKCU:\" -Recurse | Select-Object Name,Property,PSPath
             }
-            "AllUsers" {
-                if ([Security.Principal.WindowsIdentity]::GetCurrent().Groups -contains 'S-1-5-32-544') {
+            'AllUsers' {
+                if ([Security.Principal.WindowsIdentity]::GetCurrent().Groups -contains "S-1-5-32-544") {
                     $RegItems = Get-ChildItem -ErrorAction SilentlyContinue -Path  "HKU:\" -Recurse | Select-Object Name,Property,PSPath
                 }
                 else {

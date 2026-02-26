@@ -31,18 +31,18 @@ function Get-SPOPersonalSiteUrlList {
         Export-SPOOneDriveSiteUrlList -SpoTenant company -Export
     #>
 
-    [CmdletBinding(PositionalBinding=$false,DefaultParameterSetName='Get',HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud")]
-    [Alias("Export-SPOPersonalSiteUrlList","Out-SPOPersonalSiteUrlList","Get-SPOOneDriveSiteUrlList","Export-SPOOneDriveSiteUrlList","Out-SPOOneDriveSiteUrlList")]
+    [CmdletBinding(PositionalBinding=$false,DefaultParameterSetName='Get',HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud')]
+    [Alias('Export-SPOPersonalSiteUrlList','Out-SPOPersonalSiteUrlList','Get-SPOOneDriveSiteUrlList','Export-SPOOneDriveSiteUrlList','Out-SPOOneDriveSiteUrlList')]
 
     param(
         [Parameter(Mandatory=$true, Position=0, ParameterSetName='Get')]
         [Parameter(Mandatory=$true, Position=0, ParameterSetName='Export')]
         [Parameter(Mandatory=$true, Position=0, ParameterSetName='GridView')]
-        [Alias("Tenant")]
-        [ValidateScript({if (-not($_.EndsWith(".onmicrosoft.com"))) {$true} else {throw "Invalid value: `"$_`"."}})]
+        [Alias('Tenant')]
+        [ValidateScript({if (-not($_.EndsWith('.onmicrosoft.com'))) {$true} else {throw "Invalid value: `"$_`"."}})]
         [String] $TenantName,
-        [Parameter(Mandatory=$false, ParameterSetName="GridView")] [Switch] $GridView,
-        [Parameter(Mandatory=$false, ParameterSetName="Export")] [Switch] $Export,
+        [Parameter(Mandatory=$false, ParameterSetName='GridView')] [Switch] $GridView,
+        [Parameter(Mandatory=$false, ParameterSetName='Export')] [Switch] $Export,
         [Parameter(Mandatory=$false, ParameterSetName='Export')]
         [String] $ExportFile = [Environment]::GetFolderPath("LocalApplicationData") + "\temp\SPOPersonalSiteUrlList.csv"
     )
@@ -56,13 +56,13 @@ function Get-SPOPersonalSiteUrlList {
 
     process {
         switch ($PSCmdlet.ParameterSetName) {
-            "Get" {
+            'Get' {
                 Get-SPOSite -IncludePersonalSite $true -Limit All -Filter "Url -like '-my.sharepoint.com/personal/'" | Select-Object Owner,Url,Status,SiteId,StorageQuota,StorageUsageCurrent,CreatedTime,LastContentModifiedDate | Format-Table
             }
-            "GridView" {
+            'GridView' {
                 Get-SPOSite -IncludePersonalSite $true -Limit All -Filter "Url -like '-my.sharepoint.com/personal/'" | Select-Object Owner,Url,Status,SiteId,StorageQuota,StorageUsageCurrent,CreatedTime,LastContentModifiedDate | Out-GridView
             }
-            "Export" {
+            'Export' {
                 Get-SPOSite -IncludePersonalSite $true -Limit All -Filter "Url -like '-my.sharepoint.com/personal/'" | Select-Object Owner,Url,Status,SiteId,StorageQuota,StorageUsageCurrent,CreatedTime,LastContentModifiedDate | Export-Csv -Path $ExportFile -Delimiter ";" -Force
                 Write-Information -MessageData "INFO: Results exported to $ExportFile" -InformationAction Continue
             }

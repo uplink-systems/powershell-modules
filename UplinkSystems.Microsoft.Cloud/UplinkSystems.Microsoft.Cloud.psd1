@@ -12,7 +12,7 @@
 RootModule = 'UplinkSystems.Microsoft.Cloud.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.1.0'
+ModuleVersion = '1.2.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -69,15 +69,19 @@ PowerShellVersion = '5.1'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Confirm-EntraCustomDomain',
+FunctionsToExport = 'Add-EntraApplicationCredential',
+                    'Add-EntraCustomDomain',
+                    'Confirm-EntraCustomDomain',
                     'Confirm-EntraUserRoleAssignment',
                     'Confirm-MgGraphScopeInContextScopes',
                     'Disable-MsCommerceSelfServicePurchase',
+                    'Disconnect-WorkOrSchoolAccount',
                     'Enable-MsCommerceSelfServicePurchase',
                     'Get-EntraCustomDomainDnsRecordSet',
                     'Get-EntraTenantId',
                     'Get-SPOPersonalSiteUrlList',
-                    'New-EntraCustomDomain',
+                    'New-CrossTenantMigrationAppRegistration',
+                    'New-CrossTenantMigrationTenantPreparation',
                     'New-SPOCrossTenantPartnerRelationship',
                     'Remove-SPOPersonalSite',
                     'Set-PurviewSensitivityLabelLocale',
@@ -90,7 +94,8 @@ CmdletsToExport = @()
 # VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport =   'Confirm-CustomDomain',
+AliasesToExport =   'Add-AzureAdApplicationCredential',
+                    'Confirm-CustomDomain',
                     'Confirm-UserRoleAssignment',
                     'Confirm-MgGraphScope',
                     'Delete-SPOPersonalSite',
@@ -101,7 +106,9 @@ AliasesToExport =   'Confirm-CustomDomain',
                     'Get-CustomDomainDnsRecordSet',
                     'Get-SPOOneDriveSiteUrlList',
                     'Get-TenantId',
-                    'New-CustomDomain',
+                    'New-CTMAppRegistration',
+                    'New-CTMTenantPreparation',
+                    'New-EntraCustomDomain',
                     'New-SPOCTPartner',
                     'Out-SPOPersonalSiteUrlList',
                     'Out-SPOOneDriveSiteUrlList',
@@ -118,17 +125,24 @@ AliasesToExport =   'Confirm-CustomDomain',
 FileList =          'UplinkSystems.Microsoft.Cloud.psd1',
                     'UplinkSystems.Microsoft.Cloud.psm1',
                     'README.md',
+                    'Private\Add-CtimExchangeServerPSSession.ps1',
+                    'Private\Convert-SPOUpnToSiteName.ps1',
                     'Private\Initialize-Module.ps1',
+                    'Private\Remove-CtimExchangeServerPSSession.ps1',
                     'Private\Write-Message.ps1',
+                    'Public\Add-EntraApplicationCredential.ps1',
+                    'Public\Add-EntraCustomDomain.ps1',
                     'Public\Confirm-EntraCustomDomain.ps1',
                     'Public\Confirm-EntraUserRoleAssignment.ps1',
                     'Public\Confirm-MgGraphScopeInContextScopes.ps1',
                     'Public\Disable-MsCommerceSelfServicePurchase.ps1',
+                    'Public\Disconnect-WorkOrSchoolAccount.ps1',
                     'Public\Enable-MsCommerceSelfServicePurchase.ps1',
                     'Public\Get-EntraCustomDomainDnsRecordSet.ps1',
                     'Public\Get-EntraTenantId.ps1',
                     'Public\Get-SPOPersonalSiteUrlList.ps1',
-                    'Public\New-EntraCustomDomain.ps1',
+                    'Public\New-CrossTenantMigrationAppRegistration.ps1',
+                    'Public\New-CrossTenantMigrationTenantPreparation.ps1',
                     'Public\New-SPOCrossTenantPartnerRelationship.ps1',
                     'Public\Remove-SPOPersonalSite.ps1',
                     'Public\Set-PurviewSensitivityLabelLocale.ps1',

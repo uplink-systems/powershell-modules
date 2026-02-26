@@ -7,19 +7,15 @@ function Confirm-EntraCustomDomain {
         The function verifies a new custom domain in Entra using DNS TXT record verification.
         .PARAMETER Domain [String]
         The mandatory parameter -Domain represents the FQDN of the domain to verify.
-        .NOTES
-        The function requires the Microsoft Graph SDK PowerShell module to work as well as an 
-        authenticated MgGraph session. The function validates required scopes and initiates a
-        new MgGraph connection if current scopes are insufficient.
         .OUTPUTS
         System.Boolean
         .COMPONENT
         Microsoft.Graph
         .NOTES
-        The function requires an authenticated MgGraph session with at least "User.ReadWrite.All"
-        and "Domain.ReadWrite.All"scope.
-        The function validates required scopes and initiates a new MgGraph connection if current
-        scopes are insufficient.
+        A valid MgGraph PowerShell user session with valid scopes or a client id session
+        with valid consents must be established for the function to work:
+        - User.ReadWrite.All
+        - Domain.ReadWrite.All
         .EXAMPLE
         Confirm-EntraCustomDomain -Domain company.com
         .EXAMPLE
@@ -28,18 +24,15 @@ function Confirm-EntraCustomDomain {
         (New-MgDomain -Domain company.com).id | Confirm-EntraCustomDomain
     #>
 
-    [CmdletBinding(PositionalBinding=$false,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud")]
-    [Alias("Confirm-CustomDomain")]
+    [CmdletBinding(PositionalBinding=$false,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud')]
+    [Alias('Confirm-CustomDomain')]
     
     param(
         [Parameter(Mandatory=$true,Position=0,ValueFromPipeline=$true)] [String] $Domain
     )
 
     begin {
-        [Array]$Preferences = $ErrorActionPreference,$InformationPreference
-        $ErrorActionPreference = 'SilentlyContinue'
-        $MgGraphScopes = "User.ReadWrite.All","Domain.ReadWrite.All"
-        if (-not(Confirm-MgGraphScopeInContextScopes -Scopes $MgGraphScopes)) {Connect-MgGraph -Scopes $MgGraphScopes -NoWelcome}
+        if (-not(Get-MgContext)) {Write-Host -Object "Error: Not connected to MgGraph..." -ForegroundColor Red; return}
     }
 
     process {
@@ -52,7 +45,7 @@ function Confirm-EntraCustomDomain {
         }
         else {
             try {
-                $DomainVerificationCode = Get-EntraCustomDomainDnsRecordSet -Domain $Domain -VerificationDnsRecordOnly
+                $DomainVerificationCode = Get-EntraCustomDomainDnsRecordSet -Domain $Domain -VerificationDnsRecordOnly -ErrorAction SilentlyContinue
                 $DnsRecordValue = Resolve-DnsName -Name $Domain -Type TXT -ErrorAction SilentlyContinue | Where-Object {$_.Strings -like "MS=*"}
                 if ($DomainVerificationCode.Value -eq $DnsRecordValue.Strings) {
                     Confirm-MgDomain -DomainId $Domain -ErrorAction Stop
@@ -66,10 +59,6 @@ function Confirm-EntraCustomDomain {
                 return $false
             }
         }
-    }
-
-    end {
-        $ErrorActionPreference = $Preferences[0]
     }
 
 }

@@ -36,10 +36,9 @@ function Get-EntraCustomDomainDnsRecordSet {
         .COMPONENT
         Microsoft.Graph
         .NOTES
-        The function requires an authenticated MgGraph session with at least "Domain.ReadWrite.All"
-        scope to work.
-        The function validates required scopes and initiates a new MgGraph connection if current
-        scopes are insufficient.
+        A valid MgGraph PowerShell user session with valid scopes or a client id session
+        with valid consents must be established for the function to work:
+        - Domain.ReadWrite.All
         .EXAMPLE
         Get-EntraCustomDomainDnsRecordSet -Domain "company.org"
         .EXAMPLE
@@ -50,20 +49,19 @@ function Get-EntraCustomDomainDnsRecordSet {
         (Get-MgDomain | Where-object {$_.IsVerified -ne $true}).id | Get-EntraCustomDomainDnsRecordSet -VerificationDnsRecordOnly
     #>
 
-    [CmdletBinding(PositionalBinding=$false,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud")]
-    [Alias("Get-CustomDomainDnsRecordSet")]
+    [CmdletBinding(PositionalBinding=$false,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud')]
+    [Alias('Get-CustomDomainDnsRecordSet')]
 
     param(
         [Parameter(Mandatory=$true,Position=0,ValueFromPipeline=$true)] [String] $Domain,
-        [Parameter(Mandatory=$false)] [Alias("VerificationDns")] [Switch] $VerificationDnsRecordOnly,
-        [Parameter(Mandatory=$false)] [Alias("ServiceConfig")] [Switch] $ServiceConfigurationRecordsOnly
+        [Parameter(Mandatory=$false)] [Alias('VerificationDns')] [Switch] $VerificationDnsRecordOnly,
+        [Parameter(Mandatory=$false)] [Alias('ServiceConfig')] [Switch] $ServiceConfigurationRecordsOnly
     )
 
     begin {
+        if (-not(Get-MgContext)) {Write-Host -Object "Error: Not connected to MgGraph..." -ForegroundColor Red; return}
         [Array]$Preferences = $ErrorActionPreference,$InformationPreference
         $ErrorActionPreference = 'SilentlyContinue'
-        $MgGraphScopes = "Domain.ReadWrite.All"
-        if (-not(Confirm-MgGraphScopeInContextScopes -Scopes $MgGraphScopes)) {Connect-MgGraph -Scopes $MgGraphScopes -NoWelcome}
     }
     process {
         $DomainVerificationDnsRecords = Get-MgDomainVerificationDnsRecord -DomainId $Domain

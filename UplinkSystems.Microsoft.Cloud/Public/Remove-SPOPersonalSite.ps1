@@ -45,20 +45,20 @@ function Remove-SPOPersonalSite {
         Get-MgUser -Filter "startswith(UserPrincipalName,'john')" | Remove-SPOPersonalSite
     #>
 
-    [CmdletBinding(PositionalBinding=$false,DefaultParameterSetName='Get',HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud")]
-    [Alias("Delete-SPOPersonalSite")]
+    [CmdletBinding(PositionalBinding=$false,DefaultParameterSetName='Get',HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud')]
+    [Alias('Delete-SPOPersonalSite')]
 
     param(
         [Parameter(Mandatory=$true,Position=0,ValueFromPipeline=$true)]
-        [Alias("UPN")]
+        [Alias('UPN')]
         [String] $UserPrincipalName,
         [Parameter(Mandatory=$true)]
-        [Alias("Tenant")]
-        [ValidateScript({if (-not($_.EndsWith(".onmicrosoft.com"))) {$true} else {throw "Invalid value: `"$_`"."}})]
+        [Alias('Tenant')]
+        [ValidateScript({if (-not($_.EndsWith('.onmicrosoft.com'))) {$true} else {throw "Invalid value: `"$_`"."}})]
         [String] $TenantName,
-        [Parameter(Mandatory=$true)]
-        [Alias("Owner")]
-        [String] $AdminUpn,
+        # [Parameter(Mandatory=$true)]
+        # [Alias('Owner')]
+        # [String] $AdminUpn,
         [Parameter(Mandatory=$false)]
         [Switch] $SoftDelete,
         [Parameter(Mandatory=$false)]
@@ -96,8 +96,8 @@ function Remove-SPOPersonalSite {
             if ($SpoPersonalSite.StorageUsageCurrent -eq 0) {
                 Start-Sleep -Seconds 1
                 try {
-                    Set-SPOSite -Identity $SpoPersonalSite.Url -LockState Unlock -ErrorAction Stop
-                    Set-SPOSite -Identity $SpoPersonalSite.Url -Owner $AdminUpn -ErrorAction Stop
+                    # Set-SPOSite -Identity $SpoPersonalSite.Url -LockState Unlock -ErrorAction Stop
+                    # Set-SPOSite -Identity $SpoPersonalSite.Url -Owner $AdminUpn -ErrorAction Stop
                     Remove-SPOSite -Identity $SpoPersonalSite.Url -Confirm:$false -ErrorAction Stop
                     if (-not($SoftDelete)) {
                         Remove-SPODeletedSite -Identity $SpoPersonalSite.Url -Confirm:$false -ErrorAction Stop
@@ -118,8 +118,6 @@ function Remove-SPOPersonalSite {
                         # remove site, even if storage in use; delete site finally, if -SoftDelete switch not enabled...
                         Start-Sleep -Seconds 1
                         try {
-                            Set-SPOSite -Identity $SpoPersonalSite.Url -LockState Unlock -ErrorAction Stop
-                            Set-SPOSite -Identity $SpoPersonalSite.Url -Owner $AdminUpn -ErrorAction Stop
                             Remove-SPOSite -Identity $SpoPersonalSite.Url -Confirm:$false -ErrorAction Stop
                             if (-not($SoftDelete)) {
                                 Remove-SPODeletedSite -Identity $SpoPersonalSite.Url -Confirm:$false -ErrorAction Stop

@@ -22,14 +22,15 @@ function Confirm-MgGraphScopeInContextScopes {
         Confirm-MgGraphScope -Scope "Directory.AccessAsUser.All"
     #>
 
-    [CmdletBinding(PositionalBinding=$false,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud")]
-    [Alias("Confirm-MgGraphScope")]
+    [CmdletBinding(PositionalBinding=$false,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Microsoft.Cloud')]
+    [Alias('Confirm-MgGraphScope')]
 
     param(
-        [Parameter(Mandatory=$true,Position=0)] [Alias("Scope")] [Array] $Scopes
+        [Parameter(Mandatory=$true,Position=0)] [Alias('Scope')] [Array] $Scopes
     )
 
     begin {
+        if (-not(Get-MgContext)) {Write-Host -Object "Error: Not connected to MgGraph..." -ForegroundColor Red; return}
         [Array]$Preferences = $ErrorActionPreference,$InformationPreference
         $ErrorActionPreference = 'SilentlyContinue'
     }
