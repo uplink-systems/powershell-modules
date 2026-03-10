@@ -7,7 +7,8 @@ $ModuleImportLogo=@"
 /________/__/    /______/__/__/|__/__/|__|    /_______/  /___/ /_______/  /__/  /______/__/|___/|__|______/
 
 "@
-Write-Host -Object $ModuleImportLogo -ForegroundColor Cyan
+# write composed logo to host...
+Write-Host -Object $ModuleImportLogo -ForegroundColor Blue
 
 # set variables for public and private function import...
 $DirectorySeparator = [System.IO.Path]::DirectorySeparatorChar
@@ -39,12 +40,11 @@ $PublicFunctions | ForEach-Object {
 
 # complete importing module: set window title and output info message to console...
 $ModuleManifestHashTable = Import-PowerShellDataFile -Path $ModuleManifest
-try {$host.UI.RawUI.WindowTitle="$ModuleName $($ModuleManifestHashTable.ModuleVersion)"}
-catch {Write-Error}
+try {$Host.UI.RawUI.WindowTitle="$ModuleName $($ModuleManifestHashTable.ModuleVersion)"}
+catch {}
 $ModuleImportMessage=@"
 PowerShell module '$ModuleName' version $($ModuleManifestHashTable.ModuleVersion). Developed and maintained by $($ModuleManifestHashTable.Author).
-This module is licensed under the following conditions: $($($($ModuleManifestHashTable.PrivateData).PSData).LicenseUri).
+This module is licensed under the following conditions: $($($($ModuleManifestHashTable.PrivateData).PSData).LicenseUri).`n
 "@
-# write composed logo and message to console...
+# write composed message to host...
 Write-Host -Object $ModuleImportMessage -ForegroundColor DarkGray
-Write-Host

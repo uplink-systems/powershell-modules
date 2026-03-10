@@ -12,21 +12,23 @@ function Test-TerraformWorkingDirectory {
 		.OUTPUTS
 		System.Boolean
 	#>
-	[CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Test-TfWorkingDirectory")]
+	[CmdletBinding(HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Test-TfWorkingDirectory')]
 	[OutputType([System.Boolean])]
 	param(
-		[Parameter(Mandatory=$true,ValueFromPipeline)] [System.IO.FileInfo] $WorkingDir
+		[Parameter(Mandatory=$true)] [System.IO.FileInfo] $WorkingDir
 	)
 	begin {
+		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
 		$WorkingDir = $(Get-Item $WorkingDir).FullName
 	}
 	process {
 		$TerraformWorkDir = Test-Path -Path $WorkingDir
 		$TerraformFileTypes = Get-ChildItem -Path $(Join-Path -Path $WorkingDir -ChildPath "\*") -recurse -include "*.tf","*.tf.json","*.tfvars"
+		if ($TerraformWorkDir -and $TerraformFileTypes) {return $true} else {return $false}
 	}
 	end {
-		if ($TerraformWorkDir -and $TerraformFileTypes) {return $true} else {return $false}
+		$ErrorActionPreference = $Preferences[0]
 	}
 }

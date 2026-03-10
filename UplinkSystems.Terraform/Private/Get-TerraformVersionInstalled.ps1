@@ -13,19 +13,23 @@ Function Get-TerraformVersionInstalled {
         To process the result for version comparison use [Version] prefix, e.g.:
         $AsVersion = [Version]$(Get-TerraformVersionInstalled)
 	#>
-	[CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Invoke-TfVersionInstalled")]
+	[CmdletBinding(HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Invoke-TfVersionInstalled')]
     Param()
     begin {
+        [Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
         $ErrorActionPreference = 'SilentlyContinue'
     }
     process {
         try {
-            $VersionInstalled   = (Invoke-Expression "terraform --version" -ErrorAction Stop | Where-Object { $_ -match 'Terraform v\d{1,}\.\d{1,}\.\d{1,}' } | Select-String -Pattern "([\d]+.[\d]+.[\d]+-[\w]+[\d]+|[\d]+.[\d]+.[\d]+)").Matches.Value
+            $VersionInstalled = (Invoke-Expression "terraform --version" -ErrorAction Stop | Where-Object { $_ -match 'Terraform v\d{1,}\.\d{1,}\.\d{1,}' } | Select-String -Pattern "([\d]+.[\d]+.[\d]+-[\w]+[\d]+|[\d]+.[\d]+.[\d]+)").Matches.Value
             return $VersionInstalled
         } catch {
-            $VersionInstalled   = $null
+            $VersionInstalled = $null
             return $VersionInstalled
         }
+    }
+    end {
+        $ErrorActionPreference = $Preferences[0]
     }
 }

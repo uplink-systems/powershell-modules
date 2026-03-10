@@ -25,10 +25,10 @@ function Invoke-TerraformWorkingDirectoryCleanup {
         Invoke-TerraformWorkingDirectoryCleanup -WorkingDir "C:\Terraform\ProjectName" -OutFile "terraformplan"
 	#>
 
-	[CmdletBinding(SupportsShouldProcess=$true,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-    [Alias ("Invoke-TfWorkingDirCleanup")]
+	[CmdletBinding(SupportsShouldProcess=$true,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+    [Alias ('Invoke-TfWorkingDirCleanup')]
 	param(
-        [Parameter(Mandatory=$false)] [ValidateScript({if(-not($_ | Test-Path)) {throw "Directory does not exist..."}; return $true})]
+        [Parameter(Mandatory=$false)] [ValidateScript({if(-not($_ | Test-Path)) {throw 'Directory does not exist...'}; return $true})]
         [System.IO.FileInfo] $WorkingDir = $PWD,
         [Parameter(Mandatory=$false)]
         [string] $OutFile = "tfplan",
@@ -36,6 +36,7 @@ function Invoke-TerraformWorkingDirectoryCleanup {
         [string] $OutFileTfGraph = "$OutFile.tfgraph"
     )
     begin {
+        [Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
         $ErrorActionPreference = 'SilentlyContinue'
         $OutFilePath = Join-Path -Path $WorkingDir -ChildPath $OutFile
         $OutFilePathTfGraph = Join-Path -Path $WorkingDir -ChildPath $OutFileTfGraph
@@ -53,5 +54,7 @@ function Invoke-TerraformWorkingDirectoryCleanup {
             Remove-Item -Path $OutFilePathTfGraph -Force
         }
     }
-    end {}
+    end {
+        $ErrorActionPreference = $Preferences[0]
+    }
 }

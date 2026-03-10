@@ -22,11 +22,11 @@ function Invoke-TerraformApply {
 		.INPUTS
 		System.IO.FileInfo
 	#>
-	[CmdletBinding(SupportsShouldProcess=$true,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Invoke-TfApply")]
+	[CmdletBinding(SupportsShouldProcess=$true,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Invoke-TfApply')]
 	param(
-		[Parameter(Position=0,Mandatory=$true,HelpMessage="Enter the Terraform working/project directory...")]
-		[ValidateScript({if(-not($_ | Test-Path)) {throw "Directory does not exist..."}; return $true})]
+		[Parameter(Position=0,Mandatory=$true,HelpMessage='Enter the Terraform working/project directory...')]
+		[ValidateScript({if(-not($_ | Test-Path)) {throw 'Directory does not exist...'}; return $true})]
 		[System.IO.FileInfo] $WorkingDir,
 		[Parameter(Mandatory=$false)]
 		[bool] $AutoApprove = $false,
@@ -38,6 +38,7 @@ function Invoke-TerraformApply {
 		[string] $OutFile = "tfplan"
 	)
 	begin {
+		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
 		Set-Location -Path $WorkingDir
 	}
@@ -62,5 +63,6 @@ function Invoke-TerraformApply {
 	}
 	end {
 		Set-Location -Path $MyInvocation.PSScriptRoot
+		$ErrorActionPreference = $Preferences[0]
 	}
 }

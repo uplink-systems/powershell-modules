@@ -11,14 +11,15 @@ function Invoke-TerraformValidate {
 		Invoke-TerraformValidate -WorkingDir "C:\Terraform\Project"
 		Invoke-TerraformValidate -WorkingDir "Project"
 	#>
-	[CmdletBinding(SupportsShouldProcess=$true,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Invoke-TfValidate")]
+	[CmdletBinding(SupportsShouldProcess=$true,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Invoke-TfValidate')]
 	param(
-		[Parameter(Position=0,Mandatory=$true,HelpMessage="Enter the Terraform working/project directory...")]
-		[ValidateScript({if(-not($_ | Test-Path)) {throw "Directory does not exist..."}; return $true})]
+		[Parameter(Position=0,Mandatory=$true,HelpMessage='Enter the Terraform working/project directory...')]
+		[ValidateScript({if(-not($_ | Test-Path)) {throw 'Directory does not exist...'}; return $true})]
 		[System.IO.FileInfo] $WorkingDir
 	)
 	begin {
+		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
 		Set-Location -Path $WorkingDir
 	}
@@ -29,5 +30,6 @@ function Invoke-TerraformValidate {
 	}
 	end {
 		Set-Location -Path $MyInvocation.PSScriptRoot
+		$ErrorActionPreference = $Preferences[0]
 	}
 }

@@ -14,15 +14,19 @@ function Test-TerraformRunningAsAdmin {
             exit 1
         }
 	#>
-	[CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-    [Alias("Test-TfRunAsAdmin")]
+	[CmdletBinding(HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+    [Alias('Test-TfRunAsAdmin')]
     [OutputType([System.Boolean])]
     param()
     begin {
+        [Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
         $ErrorActionPreference = 'SilentlyContinue'
     }
     process {
         [Security.Principal.WindowsPrincipal]$CurrentUser = [Security.Principal.WindowsIdentity]::GetCurrent();
         return $CurrentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator);
+    }
+    end {
+        $ErrorActionPreference = $Preferences[0]
     }
 }

@@ -20,12 +20,13 @@ function Get-TerraformVersionAvailable {
         $AsVersion = [Version]$(Get-TerraformVersionAvailable)
 	#>
     
-    [CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Get-TfVersionAvailable")]
+    [CmdletBinding(HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Get-TfVersionAvailable')]
     param (
         [Parameter()] [switch] $All
     )
     begin {
+        [Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
         $ErrorActionPreference = 'SilentlyContinue'
     }
     process {
@@ -41,6 +42,9 @@ function Get-TerraformVersionAvailable {
             $VersionAvailable = $null
             return $VersionAvailable
         }
+    }
+    end {
+        $ErrorActionPreference = $Preferences[0]
     }
 }
 

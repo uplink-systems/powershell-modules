@@ -36,11 +36,11 @@ function Invoke-TerraformDestroy {
 		Invoke-TerraformDestroy -WorkingDir "C:\Terraform\Project"
 		Invoke-TerraformDestroy -WorkingDir "Project" -Mode "apply" -AutoApprove $true
 	#>
-	[CmdletBinding(SupportsShouldProcess=$true,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Invoke-TfDestroy")]
+	[CmdletBinding(SupportsShouldProcess=$true,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Invoke-TfDestroy')]
 	param(
-		[Parameter(Position=0,Mandatory=$true,HelpMessage="Enter the Terraform working/project directory...")]
-		[ValidateScript({if(-not($_ | Test-Path)) {throw "Directory does not exist..."}; return $true})]
+		[Parameter(Position=0,Mandatory=$true,HelpMessage='Enter the Terraform working/project directory...')]
+		[ValidateScript({if(-not($_ | Test-Path)) {throw 'Directory does not exist...'}; return $true})]
 		[System.IO.FileInfo] $WorkingDir,
 		[Parameter(Mandatory=$false)]
 		[bool] $AutoApprove = $false,
@@ -59,6 +59,7 @@ function Invoke-TerraformDestroy {
 		[bool] $Refresh = $true
 	)
 	begin {
+		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
 		Set-Location -Path $WorkingDir
 	}
@@ -103,5 +104,6 @@ function Invoke-TerraformDestroy {
 	}
 	end {
 		Set-Location -Path $MyInvocation.PSScriptRoot
+		$ErrorActionPreference = $Preferences[0]
 	}
 }

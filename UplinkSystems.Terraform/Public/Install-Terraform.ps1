@@ -36,15 +36,16 @@ function Install-Terraform {
         .EXAMPLE
         Install-Terraform -WorkingDir "C:\TEMP\TfInstall" -Update -DebugEnabled
 	#>
-    [CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Install-Tf")]
+    [CmdletBinding(HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Install-Tf')]
     param(
         [Parameter(Mandatory=$false)] [System.IO.FileInfo] $WorkingDir = $ENV:TEMP,
-        [Parameter(Mandatory=$false)] [System.IO.FileInfo] $InstallDir = (Join-Path -Path $ENV:ProgramFiles -ChildPath "Terraform"),
+        [Parameter(Mandatory=$false)] [System.IO.FileInfo] $InstallDir = (Join-Path -Path $ENV:ProgramFiles -ChildPath 'Terraform'),
         [Parameter()] [switch] $Update,
         [Parameter()] [switch] $DebugEnabled
     )
     begin {
+        [Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
         $ErrorActionPreference = 'SilentlyContinue'
         if ($DebugEnabled.IsPresent) {Write-Host -Object "NOTE: debug mode is enabled... writing debug messages to console..." -ForegroundColor Yellow}
         if (-not(Test-TerraformRunningAsAdmin)) {
@@ -152,5 +153,6 @@ function Install-Terraform {
         Remove-Item -Path $ArchiveFilePath -Force -ErrorAction SilentlyContinue
         Remove-Item -Path $ArchiveExpandDir -Recurse -Force -ErrorAction SilentlyContinue
         Set-Location -Path $MyInvocation.PSScriptRoot
+        $ErrorActionPreference = $Preferences[0]
     }
 }

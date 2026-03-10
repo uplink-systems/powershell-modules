@@ -21,13 +21,16 @@ function Set-TerraformEnvironmentVariable {
 		}
 		Set-TerraformEnvironmentVariable -EnvironmentVariables $EnvironmentVariables -System
 	#>
-	[CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Set-TfEnvironmentVariable")]
+	[CmdletBinding(HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Set-TfEnvironmentVariable')]
 	param(
-		[Parameter(Mandatory=$true)] [HashTable] $EnvironmentVariables,
-		[Parameter(Mandatory=$false)] [Switch] $System = $false
+		[Parameter(Mandatory=$true)]
+		[HashTable] $EnvironmentVariables,
+		[Parameter(Mandatory=$false)]
+		[Switch] $System
 	)
 	begin {
+		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
         $ErrorActionPreference = 'SilentlyContinue'
 		if (($System) -and (Test-TerraformRunningAsAdmin -ne $true)) {
 			Write-Host -Object "`nSpecified to create 'System' variables but session is not running as Administrator..." -ForegroundColor DarkGray -NoNewline
@@ -46,5 +49,7 @@ function Set-TerraformEnvironmentVariable {
 			}
 		}
 	}
-	end {}
+	end {
+		$ErrorActionPreference = $Preferences[0]
+	}
 }

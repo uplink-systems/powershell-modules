@@ -12,17 +12,18 @@ function Invoke-TerraformCustom {
 		The optional parameter $ArgumentList represents one the command and options to process with Terraform. If not
 		provided, the function will ask for the parameter as variable during process.
 	#>
-	[CmdletBinding(SupportsShouldProcess=$true,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Invoke-TfCustom")]
+	[CmdletBinding(SupportsShouldProcess=$true,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Invoke-TfCustom')]
 	param(
-		[Parameter(Position=0,Mandatory=$true,HelpMessage="Enter the Terraform working/project directory...")]
-		[ValidateScript({if(-not($_ | Test-Path)) {throw "Directory does not exist..."}; return $true})]
+		[Parameter(Position=0,Mandatory=$true,HelpMessage='Enter the Terraform working/project directory...')]
+		[ValidateScript({if(-not($_ | Test-Path)) {throw 'Directory does not exist...'}; return $true})]
 		[System.IO.FileInfo] $WorkingDir,
 		[Parameter(Mandatory=$false)]
 		[String] $ArgumentList = ""
 
 	)
 	begin {
+		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
 		Set-Location -Path $WorkingDir
 	}
@@ -46,5 +47,6 @@ function Invoke-TerraformCustom {
 	}
 	end {
 		Set-Location -Path $MyInvocation.PSScriptRoot
+		$ErrorActionPreference = $Preferences[0]
 	}
 }

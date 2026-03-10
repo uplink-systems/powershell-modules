@@ -3,7 +3,7 @@
 ### Description
 
 The module **UplinkSystems.Terraform** provides PowerShell functions for the following tasks:
-* manage installation of Terraform executable where no software distribution or package manager like MECM or Chocolatey is available  
+* manage installation of Terraform executable where software distribution or package manager like MECM or Chocolatey is not available  
 * manage Terraform projects from PowerShell scripts where no Azure DevOps pipelining or GitHub Actions is available for automation  
   
 To achieve this goal the module contains the following public functions that can be used with its parameters to automate Terraform project commands:  
@@ -15,10 +15,14 @@ To achieve this goal the module contains the following public functions that can
 * <code>Invoke-TerraformGet</code>
 * <code>Invoke-TerraformInit</code>
 * <code>Invoke-TerraformPlan</code>
+* <code>Invoke-TerraformStatePull</code>
+* <code>Invoke-TerraformStatePush</code>
 * <code>Invoke-TerraformValidate</code>
 * <code>Invoke-TerraformWorkingDirectoryCleanup</code>
 * <code>Set-TerraformEnvironmentVariable</code>
+* <code>Stop-TerraformProcess</code>
 * <code>Test-TerraformRequirement</code>
+* <code>Unblock-TerraformStateFileAzureBackend</code>
 * <code>Uninstall-Terraform</code>
   
 For detailed information about each functions options please refer to each function's comment based help.  
@@ -30,14 +34,29 @@ The module is currently intended to run on Windows operating systems only.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_powershell"></a> [PowerShell](#requirement\_powershell) | >= 7.0.0 |
+| <a name="requirement_powershell"></a> [PowerShell](#requirement\_powershell) | >= 7.4.0 |
 
 ### Release Notes
+
+#### 1.2.0
+
+BREAKING CHANGES:  
+* Updated PowerShell minimum version requirement to 7.4.0.
+  
+NEW FEATURES:  
+* New module function: <code>Invoke-TerraformStatePull</code>
+* New module function: <code>Invoke-TerraformStatePush</code>
+* New module function: <code>Stop-TerraformProcess</code>
+* New module function: <code>Unblock-TerraformStateFileAzureBackend</code>
+  
+IMPROVEMENTS:
+* Improved handling of preference values when entering/exiting the function.
+* Optimized and cleaned up existing functions.
 
 #### 1.1.1
 
 BUG FIX:  
-* <code>Install-Terraform.ps1</code>: fixed a bug where available Terraform version could not be detected caused by a faulty parameter.  
+* <code>Install-Terraform</code>: fixed a bug where available Terraform version could not be detected cause by a faulty parameter.  
 
 #### 1.1.0
 

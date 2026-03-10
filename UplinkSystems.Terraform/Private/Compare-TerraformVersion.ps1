@@ -11,13 +11,23 @@ function Compare-TerraformVersion {
         .EXAMPLE
         Compare-TerraformVersion
 	#>
-    [CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Compare-TfVersion")]
+    [CmdletBinding(HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Compare-TfVersion')]
     param ()
     begin {
+        [Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
         $ErrorActionPreference = 'SilentlyContinue'
     }
     process {
-        if ([Version]$(Get-TerraformVersionInstalled) -lt [Version]$(Get-TerraformVersionAvailable)) {return $true} else {return $false}
+        if ([Version]$(Get-TerraformVersionInstalled) -lt [Version]$(Get-TerraformVersionAvailable)) {
+            $ErrorActionPreference = $Preferences[0]
+            return $true
+        }
+        else {   
+            return $false
+        }
+    }
+    end {
+        $ErrorActionPreference = $Preferences[0]
     }
 }

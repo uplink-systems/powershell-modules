@@ -3,7 +3,7 @@ function Invoke-TerraformGet {
 		.SYNOPSIS
 		Invoke "terraform.exe get" command
 		.DESCRIPTION
-		The function to downloads/updates modules before planning/applying changes using "terraform.exe get" command.
+		The function downloads/updates modules before planning/applying changes using "terraform.exe get" command.
 		.PARAMETER WorkingDir [System.IO.FileInfo]
 		The mandatory parameter $WorkingDir represents the project directory (project's root module) to execute the command in.
 		Either a full path must be provided or a subfolder as relative path to $PSScriptRoot.
@@ -15,16 +15,17 @@ function Invoke-TerraformGet {
 		Invoke-TerraformGet -WorkingDir "C:\Terraform\Project"
 		Invoke-TerraformGet -WorkingDir "Project" -Update $false
 	#>
-	[CmdletBinding(SupportsShouldProcess=$true,HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Invoke-TfGet")]
+	[CmdletBinding(SupportsShouldProcess=$true,HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Invoke-TfGet')]
 	param(
-		[Parameter(Position=0,Mandatory=$true,HelpMessage="Enter the Terraform working/project directory...")]
-		[ValidateScript({if(-not($_ | Test-Path)) {throw "Directory does not exist..."}; return $true})]
+		[Parameter(Position=0,Mandatory=$true,HelpMessage='Enter the Terraform working/project directory...')]
+		[ValidateScript({if(-not($_ | Test-Path)) {throw 'Directory does not exist...'}; return $true})]
 		[System.IO.FileInfo] $WorkingDir,
 		[Parameter(Mandatory=$false)]
 		[bool] $Update = $true
 	)
 	begin {
+		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
 		Set-Location -Path $WorkingDir
 	}
@@ -40,5 +41,6 @@ function Invoke-TerraformGet {
 	}
 	end {
 		Set-Location -Path $MyInvocation.PSScriptRoot
+		$ErrorActionPreference = $Preferences[0]
 	}
 }

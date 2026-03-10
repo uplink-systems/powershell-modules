@@ -20,13 +20,14 @@ function Uninstall-Terraform {
         .EXAMPLE
         Uninstall-Terraform -InstallDir "C:\Windows\System32"
 	#>
-    [CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Uninstall-Tf")]
+    [CmdletBinding(HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Uninstall-Tf')]
     param(
-        [Parameter(Mandatory=$false)] [System.IO.FileInfo] $InstallDir = (Join-Path -Path $ENV:ProgramFiles -ChildPath "Terraform"),
+        [Parameter(Mandatory=$false)] [System.IO.FileInfo] $InstallDir = (Join-Path -Path $ENV:ProgramFiles -ChildPath 'Terraform'),
         [Parameter()] [switch] $DebugEnabled
     )
     begin {
+        [Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
         $ErrorActionPreference = 'SilentlyContinue'
         if ($DebugEnabled.IsPresent) {Write-Host -Object "NOTE: debug mode is enabled... writing debug messages to console..." -ForegroundColor Yellow}
         if (-not(Test-TerraformRunningAsAdmin)) {
@@ -76,5 +77,6 @@ function Uninstall-Terraform {
     }
     end {
         Set-Location -Path $MyInvocation.PSScriptRoot
+        $ErrorActionPreference = $Preferences[0]
     }
 }

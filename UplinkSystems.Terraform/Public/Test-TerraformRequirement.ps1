@@ -9,12 +9,13 @@ function Test-TerraformRequirement {
 		- Is terraform.exe located in the application path?
 		- Is terraform.exe version supported by the module?
 	#>
-	[CmdletBinding(HelpUri="https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform")]
-	[Alias("Test-TfRequirement")]
+	[CmdletBinding(HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
+	[Alias('Test-TfRequirement')]
 	param(
-		[Parameter(Mandatory=$false)] [string] $MinTerraformVersion = "1.12.0"
+		[Parameter(Mandatory=$false)] [string] $MinTerraformVersion = '1.12.0'
 	)
 	begin {
+		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
 		Write-Host -Object "`nValidating Terraform requirements... " -ForegroundColor DarkGray -NoNewline
 		Start-Sleep -Seconds 2
@@ -47,6 +48,8 @@ function Test-TerraformRequirement {
 		}
 		Write-Host -Object "Success... " -ForegroundColor Green
 	}
-	end {}
+	end {
+		$ErrorActionPreference = $Preferences[0]
+	}
 }
 
