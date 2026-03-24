@@ -38,6 +38,20 @@ The module is currently intended to run on Windows operating systems only.
 
 ### Release Notes
 
+#### 1.3.0
+
+BREAKING CHANGES:  
+* Module function <code>Install-Terraform</code> and its related private functions are now marked as legacy. The function only supports machine-based single-version setups which requires admin permissions. It is now replaced by new function <code>Install-TerraformApplicationVersion</code> which supports user-profile-based multi-version setups without admin permissions. The legacy function will be removed in the next release.
+* Module function <code>Uninstall-Terraform</code> and its related private functions are now marked as legacy. The function only supports machine-based single-version setups which requires admin permissions. It is now replaced by new function <code>Uninstall-TerraformApplicationVersion</code> which supports user-profile-based multi-version setups without admin permissions. The legacy function will be removed in the next release.
+  
+NEW FEATURES:  
+* New module function: <code>Install-TerraformApplicationVersion</code>
+* New module function: <code>Set-TerraformApplicationActiveVersion</code>
+* New module function: <code>Uninstall-TerraformApplicationVersion</code>
+* New module private function: <code>Get-TerraformApplicationActiveVersion</code>
+* New module private function: <code>Get-TerraformApplicationDefaultRootPath</code>
+* New module private function: <code>Get-TerraformApplicationCurrentPlatform</code>
+
 #### 1.2.0
 
 BREAKING CHANGES:  
@@ -51,7 +65,7 @@ NEW FEATURES:
   
 IMPROVEMENTS:
 * Improved handling of preference values when entering/exiting the function.
-* Optimized and cleaned up existing functions.
+* Optimized and cleaned up existing functions' code.
 
 #### 1.1.1
 

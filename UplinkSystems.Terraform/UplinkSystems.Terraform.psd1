@@ -12,7 +12,7 @@
 RootModule = 'UplinkSystems.Terraform.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.2.0'
+ModuleVersion = '1.3.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -70,6 +70,7 @@ PowerShellVersion = '7.4'
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = 'Install-Terraform',
+                    'Install-TerraformApplicationVersion',
                     'Invoke-TerraformApply',
                     'Invoke-TerraformCustom',
                     'Invoke-TerraformDestroy',
@@ -80,11 +81,13 @@ FunctionsToExport = 'Install-Terraform',
                     'Invoke-TerraformStatePush',
                     'Invoke-TerraformValidate',
                     'Invoke-TerraformWorkingDirectoryCleanup',
+                    'Set-TerraformApplicationActiveVersion',
                     'Set-TerraformEnvironmentVariable',
                     'Stop-TerraformProcess',
                     'Test-TerraformRequirement',
                     'Unblock-TerraformStateFileAzureBackend',
-                    'Uninstall-Terraform'
+                    'Uninstall-Terraform',
+                    'Uninstall-TerraformApplicationVersion'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -94,6 +97,7 @@ CmdletsToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport =   'Install-Tf',
+                    'Install-TfApplicationVersion',
                     'Invoke-TfApply',
                     'Invoke-TfCustom',
                     'Invoke-TfDestroy',
@@ -104,11 +108,13 @@ AliasesToExport =   'Install-Tf',
                     'Invoke-TfStatePush',
                     'Invoke-TfValidate',
                     'Invoke-TfWorkingDirCleanup',
+                    'Set-TfApplicationActiveVersion',
                     'Set-TfEnvironmentVariable',
                     'Stop-TfProcess',
                     'Test-TfRequirement',
                     'Unblock-TfStateFileAzureBackend',
-                    'Uninstall-Tf'
+                    'Uninstall-Tf',
+                    'Uninstall-TfApplicationVersion'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
@@ -120,11 +126,13 @@ AliasesToExport =   'Install-Tf',
 FileList =          'UplinkSystems.Terraform.psd1',
                     'UplinkSystems.Terraform.psm1',
                     'Private\Compare-TerraformVersion.ps1',
+                    'Private\Get-TerraformApplicationActiveVersion.ps1',
                     'Private\Get-TerraformVersionAvailable.ps1',
                     'Private\Get-TerraformVersionInstalled.ps1',
                     'Private\Test-TerraformRunningAsAdmin.ps1',
                     'Private\Test-TerraformWorkingDirectory.ps1',
                     'Public\Install-Terraform.ps1',
+                    'Public\Install-TerraformApplicationVersion.ps1',
                     'Public\Invoke-TerraformApply.ps1',
                     'Public\Invoke-TerraformCustom.ps1',
                     'Public\Invoke-TerraformDestroy.ps1',
@@ -135,11 +143,13 @@ FileList =          'UplinkSystems.Terraform.psd1',
                     'Public\Invoke-TerraformStatePush.ps1',
                     'Public\Invoke-TerraformValidate.ps1',
                     'Public\Invoke-TerraformWorkingDirectoryCleanup.ps1',
+                    'Public\Set-TerraformApplicationActiveVersion.ps1',
                     'Public\Set-TerraformEnvironmentVariable.ps1',
                     'Public\Stop-TerraformProcess.ps1',
                     'Public\Test-TerraformRequirement.ps1',
                     'Public\Unblock-TerraformStateFileAzureBackend.ps1',
-                    'Public\Uninstall-Terraform.ps1'
+                    'Public\Uninstall-Terraform.ps1',
+                    'Public\Uninstall-TerraformApplicationVersion'
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{

@@ -1,6 +1,7 @@
 function Compare-TerraformVersion {
 	<#
 		.SYNOPSIS
+        !! LEGACY !!
 		This function compares installed and online available Terraform versions
 		.DESCRIPTION
 		The function compares the currently installed Terraform version with the latest version
@@ -8,6 +9,8 @@ function Compare-TerraformVersion {
         installed version is up-to-date. It also returns $true if Terraform is not installed.
         .OUTPUTS
         System.IO.Boolean
+        .NOTES
+        The function is marked as legacy!
         .EXAMPLE
         Compare-TerraformVersion
 	#>

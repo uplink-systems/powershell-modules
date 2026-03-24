@@ -1,6 +1,7 @@
 function Uninstall-Terraform {
 	<#
 		.SYNOPSIS
+        !! LEGACY !!
 		Uninstall Terraform application (Windows x64 version only)
 		.DESCRIPTION
 		The function uninstalls the Terraform application to the local system (Windows x64 version
@@ -13,6 +14,8 @@ function Uninstall-Terraform {
         types are written to console in debug mode.
         .OUTPUTS
         System.IO.File
+        .NOTES
+        The function is marked as legacy!
         .EXAMPLE
         Uninstall-Terraform
         .EXAMPLE

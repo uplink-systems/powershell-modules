@@ -1,12 +1,15 @@
-Function Get-TerraformVersionInstalled {
+function Get-TerraformVersionInstalled {
 	<#
 		.SYNOPSIS
+        !! LEGACY !!
 		Get version of installed Terraform executable
 		.DESCRIPTION
 		The function gets the version of the locally installed Terraform executable and returns
         the version as string.
         .OUTPUTS
         System.IO.String
+        .NOTES
+        The function is marked as legacy!
         .EXAMPLE
         Get-TerraformVersionInstalled
         .EXAMPLE

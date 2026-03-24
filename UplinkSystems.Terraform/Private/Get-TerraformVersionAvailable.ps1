@@ -1,6 +1,7 @@
 function Get-TerraformVersionAvailable {
 	<#
 		.SYNOPSIS
+        !! LEGACY !!
 		Get version numbers of available Terraform releases
 		.DESCRIPTION
 		The function gets version numbers of available Terraform releases from HashiCorp's GitHub
@@ -9,6 +10,8 @@ function Get-TerraformVersionAvailable {
         The optional parameter $All specifies to all detected version numbers.
         .OUTPUTS
         System.IO.String
+        .NOTES
+        The function is marked as legacy!
         .EXAMPLE
         Get-TerraformVersionAvailable
         .EXAMPLE
