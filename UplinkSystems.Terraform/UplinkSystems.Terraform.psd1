@@ -151,7 +151,7 @@ FileList =          'UplinkSystems.Terraform.psd1',
                     'Public\Test-TerraformRequirement.ps1',
                     'Public\Unblock-TerraformStateFileAzureBackend.ps1',
                     'Public\Uninstall-Terraform.ps1',
-                    'Public\Uninstall-TerraformApplicationVersion'
+                    'Public\Uninstall-TerraformApplicationVersion.ps1'
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{
