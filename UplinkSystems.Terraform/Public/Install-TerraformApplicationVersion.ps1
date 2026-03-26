@@ -66,12 +66,12 @@ function Install-TerraformApplicationVersion {
         # select version number depending on parameter selected
         switch ($PSCmdlet.ParameterSetName) {
             'Version' {
-                Write-Host "Fetching infos for Terraform version $Version..." -ForegroundColor White
+                Write-Host -Object "Fetching infos for Terraform version $Version..." -ForegroundColor White
                 # stop if the requested version number format is invalid or if the requested version number doesn't exist in release list
                 if (($Version -notlike "*.*.*") -or ($TerraformReleases -notcontains $Version)) {Write-Host -Object "Version $Version is invalid or not found in release list..." -ForegroundColor Red; break}
             }
             'Latest' {
-                Write-Host "Fetching infos for the latest stable Terraform version..." -ForegroundColor White
+                Write-Host -Object "Fetching infos for the latest stable Terraform version..." -ForegroundColor White
                 # find latest stable version number, if the version on top of the array is not a stable version
                 switch ($TerraformReleases[0] -match '-') {
                     $true { 
