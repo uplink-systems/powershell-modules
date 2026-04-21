@@ -23,7 +23,7 @@ function Remove-SPOPersonalSite {
         Otherwise the SPO personal site will be hard-deleted with the option to restore.
         .PARAMETER Interactive [Switch]
         The optional parameter -Interactive enables interaction while executing the function.
-        The option can be used  the SPO personal site is not empty. With $Interactive enabled
+        The option can be used the SPO personal site is not empty. With $Interactive enabled
         the removal of the site can be enforced by a user input. Otherwise the function will
         skip the removal automatically and treat the result as failed.
         .PARAMETER Silent [Switch]
