@@ -40,7 +40,6 @@ function Invoke-TerraformApply {
 	begin {
 		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
-		Set-Location -Path $WorkingDir
 	}
 	process {
 		Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
@@ -48,21 +47,20 @@ function Invoke-TerraformApply {
 		if ($Out -and (Test-Path -Path $OutFile)) {
 			Write-Host -Object "-> Applying changes using plan file...`n" -ForegroundColor DarkGray
 			if ($AutoApprove) {
-				Start-Process -FilePath "terraform.exe" -ArgumentList "apply $OutFile $LockOption -auto-approve" -NoNewWindow -PassThru -Wait | Out-Null
+				Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "apply $OutFile $LockOption -auto-approve" -NoNewWindow -PassThru -Wait | Out-Null
 			} else {
-				Start-Process -FilePath "terraform.exe" -ArgumentList "apply $OutFile $LockOption" -NoNewWindow -PassThru -Wait | Out-Null
+				Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "apply $OutFile $LockOption" -NoNewWindow -PassThru -Wait | Out-Null
 			}
 		} else {
 			Write-Host -Object "-> Applying changes...`n" -ForegroundColor DarkGray
 			if ($AutoApprove) {
-				Start-Process -FilePath "terraform.exe" -ArgumentList "apply $LockOption -auto-approve" -NoNewWindow -PassThru -Wait | Out-Null
+				Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "apply $LockOption -auto-approve" -NoNewWindow -PassThru -Wait | Out-Null
 			} else {
-				Start-Process -FilePath "terraform.exe" -ArgumentList "apply $LockOption" -NoNewWindow -PassThru -Wait | Out-Null
+				Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "apply $LockOption" -NoNewWindow -PassThru -Wait | Out-Null
 			}
 		}
 	}
 	end {
-		Set-Location -Path $MyInvocation.PSScriptRoot
 		$ErrorActionPreference = $Preferences[0]
 	}
 }

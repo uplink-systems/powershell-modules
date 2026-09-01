@@ -25,21 +25,19 @@ function Invoke-TerraformInit {
 	begin {
 		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
-		Set-Location -Path $WorkingDir
 	}
 	process {
 		Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 		if ($Upgrade) {
 			Write-Host -Object "-> Initializing project and upgrading plugin versions...`n" -ForegroundColor DarkGray
-			Start-Process -FilePath "terraform.exe" -ArgumentList "init -upgrade" -NoNewWindow -PassThru -Wait | Out-Null
+			Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "init -upgrade" -NoNewWindow -PassThru -Wait | Out-Null
 		} else {
 			Write-Host -Object "-> Initializing project...`n" -ForegroundColor DarkGray
-			Start-Process -FilePath "terraform.exe" -ArgumentList "init" -NoNewWindow -PassThru -Wait | Out-Null
+			Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "init" -NoNewWindow -PassThru -Wait | Out-Null
 		}
 		Start-Sleep -Seconds 2
 	}
 	end {
-		Set-Location -Path $MyInvocation.PSScriptRoot
 		$ErrorActionPreference = $Preferences[0]
 	}
 }

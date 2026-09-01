@@ -33,33 +33,42 @@ function Uninstall-TerraformApplicationVersion {
         [Parameter(Mandatory=$false)] [Bool] $Confirm = $false
     )
 
-    switch ($PSCmdlet.ParameterSetName) {
-        'UninstallAllExceptLastVersions' {
-            Write-Host -Object "Detecting installed versions of Terraform application in $TerraformAppRootPath..."
-            $InstalledVersions = Get-ChildItem -Path $TerraformAppRootPath -Directory | Sort-Object -Property Name -Descending
-            if ($InstalledVersions.Count -gt $AllVersionsExceptLast) {
-                $UninstallVersions = $InstalledVersions[$AllVersionsExceptLast..($InstalledVersions.count)]
-                Write-Host -Object "Number of versions to keep ($AllVersionsExceptLast) is greater than number of versions installed ($($InstalledVersions.Count))... Proceeding..."
-                Start-Sleep -Seconds 1
-                foreach ($UninstallVersion in $UninstallVersions) {
-                    Write-Host -Object "Uninstalling Terraform version $($UninstallVersion.Name)... " -NoNewline
-                    Remove-Item -Path (Join-Path -Path $TerraformAppRootPath -ChildPath $($UninstallVersion.Name)) -Recurse -Force -Confirm:$Confirm -ErrorAction Stop
-                    if (-not(Test-Path -Path (Join-Path -Path $TerraformAppRootPath -ChildPath $($UninstallVersion.Name)))) {Write-Host -Object "Success..." -ForegroundColor Green} else {Write-Host -Object "Failed..." -ForegroundColor Red}
+    begin {
+		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
+		$ErrorActionPreference = 'SilentlyContinue'
+    }
+    process {
+        switch ($PSCmdlet.ParameterSetName) {
+            'UninstallAllExceptLastVersions' {
+                Write-Host -Object "Detecting installed versions of Terraform application in $TerraformAppRootPath..."
+                $InstalledVersions = Get-ChildItem -Path $TerraformAppRootPath -Directory | Sort-Object -Property Name -Descending
+                if ($InstalledVersions.Count -gt $AllVersionsExceptLast) {
+                    $UninstallVersions = $InstalledVersions[$AllVersionsExceptLast..($InstalledVersions.count)]
+                    Write-Host -Object "Number of versions to keep ($AllVersionsExceptLast) is greater than number of versions installed ($($InstalledVersions.Count))... Proceeding..."
+                    Start-Sleep -Seconds 1
+                    foreach ($UninstallVersion in $UninstallVersions) {
+                        Write-Host -Object "Uninstalling Terraform version $($UninstallVersion.Name)... " -NoNewline
+                        Remove-Item -Path (Join-Path -Path $TerraformAppRootPath -ChildPath $($UninstallVersion.Name)) -Recurse -Force -Confirm:$Confirm -ErrorAction Stop
+                        if (-not(Test-Path -Path (Join-Path -Path $TerraformAppRootPath -ChildPath $($UninstallVersion.Name)))) {Write-Host -Object "Success..." -ForegroundColor Green} else {Write-Host -Object "Failed..." -ForegroundColor Red}
+                    }
+                }
+                else {
+                    Write-Host -Object "Number of versions to remain ($AllVersionsExceptLast) is less or equal than number of versions installed ($($InstalledVersions.Count))... Skipping..."
                 }
             }
-            else {
-                Write-Host -Object "Number of versions to remain ($AllVersionsExceptLast) is less or equal than number of versions installed ($($InstalledVersions.Count))... Skipping..."
+            'UninstallVersionNumber' {
+                if (Test-Path -Path (Join-Path -Path $TerraformAppRootPath -ChildPath $Version)) {
+                    Write-Host -Object "Uninstalling Terraform version $Version... " -NoNewline
+                    Remove-Item -Path (Join-Path -Path $TerraformAppRootPath -ChildPath $Version) -Recurse -Force -Confirm:$Confirm -ErrorAction Stop
+                    if (-not(Test-Path -Path (Join-Path -Path $TerraformAppRootPath -ChildPath $Version))) {Write-Host -Object "Success..." -ForegroundColor Green} else {Write-Host -Object "Failed..." -ForegroundColor Red}
+                }
+                else {
+                    Write-Host -Object "Terraform version $Version not found... Skipping..."
+                }
             }
         }
-        'UninstallVersionNumber' {
-            if (Test-Path -Path (Join-Path -Path $TerraformAppRootPath -ChildPath $Version)) {
-                Write-Host -Object "Uninstalling Terraform version $Version... " -NoNewline
-                Remove-Item -Path (Join-Path -Path $TerraformAppRootPath -ChildPath $Version) -Recurse -Force -Confirm:$Confirm -ErrorAction Stop
-                if (-not(Test-Path -Path (Join-Path -Path $TerraformAppRootPath -ChildPath $Version))) {Write-Host -Object "Success..." -ForegroundColor Green} else {Write-Host -Object "Failed..." -ForegroundColor Red}
-            }
-            else {
-                Write-Host -Object "Terraform version $Version not found... Skipping..."
-            }
-        }
+    }
+    end {
+        $ErrorActionPreference = $Preferences[0]
     }
 }

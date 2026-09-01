@@ -61,7 +61,6 @@ function Invoke-TerraformDestroy {
 	begin {
 		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
-		Set-Location -Path $WorkingDir
 	}
 	process {
 		if ($Lock) {$LockOption = "-lock=true"} else {$LockOption = "-lock=false"}
@@ -71,31 +70,31 @@ function Invoke-TerraformDestroy {
 			"plan" {
 				if ($Out) {
 					Write-Host -Object "-> Destroying deployment in plan mode (dry-run) using plan file... `n" -ForegroundColor DarkGray
-					Start-Process -FilePath "terraform.exe" -ArgumentList "plan -destroy $LockOption $RefreshOption -out=$OutFile" -NoNewWindow -PassThru -Wait | Out-Null
+					Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "plan -destroy $LockOption $RefreshOption -out=$OutFile" -NoNewWindow -PassThru -Wait | Out-Null
 					Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 					if ($OutFileGraph) {
 						Write-Host -Object "-> Creating visualization file from plan... " -ForegroundColor DarkGray -NoNewLine
-						Start-Process -FilePath "terraform.exe" -ArgumentList "show -json $OutFile" -NoNewWindow -PassThru -Wait -RedirectStandardOutput ".\$OutFile.tfgraph" | Out-Null
+						Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "show -json $OutFile" -NoNewWindow -PassThru -Wait -RedirectStandardOutput ".\$OutFile.tfgraph" | Out-Null
 					}
 				} else {
 					Write-Host -Object "-> Destroying deployment in plan mode (dry-run)...`n" -ForegroundColor DarkGray
-					Start-Process -FilePath "terraform.exe" -ArgumentList "plan -destroy $LockOption $RefreshOption" -NoNewWindow -PassThru -Wait | Out-Null
+					Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "plan -destroy $LockOption $RefreshOption" -NoNewWindow -PassThru -Wait | Out-Null
 				}
 			}
 			"apply" {
 				if ($Out -and (Test-Path -Path $OutFile)) {
 					Write-Host -Object "-> Destroying deployment using plan file...`n" -ForegroundColor DarkGray
 					if ($AutoApprove) {
-						Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy -auto-approve $LockOption $OutFile" -NoNewWindow -PassThru -Wait | Out-Null
+						Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "apply -destroy -auto-approve $LockOption $OutFile" -NoNewWindow -PassThru -Wait | Out-Null
 					} else {
-						Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy $LockOption $OutFile" -NoNewWindow -PassThru -Wait | Out-Null
+						Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "apply -destroy $LockOption $OutFile" -NoNewWindow -PassThru -Wait | Out-Null
 					}
 				} else {
 					Write-Host -Object "-> Destroying deployment...`n" -ForegroundColor DarkGray
 					if ($AutoApprove) {
-						Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy -auto-approve $LockOption" -NoNewWindow -PassThru -Wait | Out-Null
+						Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "apply -destroy -auto-approve $LockOption" -NoNewWindow -PassThru -Wait | Out-Null
 					} else {
-						Start-Process -FilePath "terraform.exe" -ArgumentList "apply -destroy $LockOption" -NoNewWindow -PassThru -Wait | Out-Null
+						Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "apply -destroy $LockOption" -NoNewWindow -PassThru -Wait | Out-Null
 					}
 				}
 
@@ -103,7 +102,6 @@ function Invoke-TerraformDestroy {
 		}
 	}
 	end {
-		Set-Location -Path $MyInvocation.PSScriptRoot
 		$ErrorActionPreference = $Preferences[0]
 	}
 }

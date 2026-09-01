@@ -47,7 +47,6 @@ function Invoke-TerraformPlan {
 	begin {
 		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
-		Set-Location -Path $WorkingDir
 	}
 	process {
 		if ($Lock) {$LockOption = "-lock=true"} else {$LockOption = "-lock=false"}
@@ -55,21 +54,21 @@ function Invoke-TerraformPlan {
 		if ($Out) {
 			Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 			Write-Host -Object "-> Planning changes using plan file...`n" -ForegroundColor DarkGray
-			Start-Process -FilePath "terraform.exe" -ArgumentList "plan $LockOption $RefreshOption -out=$OutFile" -NoNewWindow -PassThru -Wait | Out-Null
+			Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "plan $LockOption $RefreshOption -out=$OutFile" -NoNewWindow -PassThru -Wait | Out-Null
 			Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 			if ($OutFileGraph) {
 				Write-Host -Object "-> Creating visualization file from plan for Terraform Graph VSCode extension... " -ForegroundColor DarkGray -NoNewLine
-				Start-Process -FilePath "terraform.exe" -ArgumentList "show -json $OutFile" -NoNewWindow -PassThru -Wait -RedirectStandardOutput ".\$OutFile.tfgraph" | Out-Null
+				Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "show -json $OutFile" -NoNewWindow -PassThru -Wait -RedirectStandardOutput ".\$OutFile.tfgraph" | Out-Null
 			}
 		}
 		else {
 			Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 			Write-Host -Object "-> Planning changes...`n" -ForegroundColor DarkGray
-			Start-Process -FilePath "terraform.exe" -ArgumentList "plan $LockOption $RefreshOption" -NoNewWindow -PassThru -Wait | Out-Null
+			Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "plan $LockOption $RefreshOption" -NoNewWindow -PassThru -Wait | Out-Null
 		}
 	}
 	end {
-		Set-Location -Path $MyInvocation.PSScriptRoot
 		$ErrorActionPreference = $Preferences[0]
 	}
 }
+

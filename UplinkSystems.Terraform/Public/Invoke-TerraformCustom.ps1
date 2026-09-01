@@ -25,7 +25,6 @@ function Invoke-TerraformCustom {
 	begin {
 		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
-		Set-Location -Path $WorkingDir
 	}
 	process {
 		if ($ArgumentList -eq "") {
@@ -43,10 +42,9 @@ function Invoke-TerraformCustom {
 		}
 		Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 		Write-Host -Object "-> Running custom command: terrafrom.exe $($ArgumentList)...`n" -ForegroundColor DarkGray
-		Start-Process -FilePath "terraform.exe" -ArgumentList $ArgumentList -NoNewWindow -PassThru -Wait | Out-Null
+		Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList $ArgumentList -NoNewWindow -PassThru -Wait | Out-Null
 	}
 	end {
-		Set-Location -Path $MyInvocation.PSScriptRoot
 		$ErrorActionPreference = $Preferences[0]
 	}
 }

@@ -4,26 +4,27 @@
 
 The module **UplinkSystems.Terraform** provides PowerShell functions for the following tasks:
 * manage installation of Terraform executable where software distribution or package manager like MECM or Chocolatey is not available  
-* manage Terraform projects from PowerShell scripts where no Azure DevOps pipelining or GitHub Actions is available for automation  
+* manage Terraform projects from PowerShell scripts where Azure DevOps pipelining or GitHub Actions is not available for automation  
   
 To achieve this goal the module contains the following public functions that can be used with its parameters to automate Terraform project commands:  
   
-* <code>Install-Terraform</code>
+* <code>Get-TerraformApplicationReleaseNumber</code>
+* <code>Install-TerraformApplicationVersion</code>
 * <code>Invoke-TerraformApply</code>
 * <code>Invoke-TerraformCustom</code>
 * <code>Invoke-TerraformDestroy</code>
 * <code>Invoke-TerraformGet</code>
 * <code>Invoke-TerraformInit</code>
 * <code>Invoke-TerraformPlan</code>
-* <code>Invoke-TerraformStatePull</code>
-* <code>Invoke-TerraformStatePush</code>
+* <code>Invoke-TerraformState</code>
 * <code>Invoke-TerraformValidate</code>
 * <code>Invoke-TerraformWorkingDirectoryCleanup</code>
+* <code>New-TerraformProject</code>
 * <code>Set-TerraformEnvironmentVariable</code>
 * <code>Stop-TerraformProcess</code>
 * <code>Test-TerraformRequirement</code>
 * <code>Unblock-TerraformStateFileAzureBackend</code>
-* <code>Uninstall-Terraform</code>
+* <code>Uninstall-TerraformApplicationVersion</code>
   
 For detailed information about each functions options please refer to each function's comment based help.  
   
@@ -37,9 +38,29 @@ The module is currently intended to run on Windows operating systems only.
 | <a name="requirement_powershell"></a> [PowerShell](#requirement\_powershell) | >= 7.4.0 |
 
 ### Release Notes
+  
+#### 1.4.0
+  
+NEW FEATURES:  
+* New module function: <code>Get-TerraformApplicationReleaseNumber</code>
+* New module function: <code>Invoke-TerraformState</code>
+* New module function: <code>New-TerraformProject</code>
 
+IMPROVEMENTS:
+* Changed processing of $WorkingDir parameter in all affected functions to improve how they switch between working- and PSScript-directories.  
+* <code>Test-TerraformRequirements</code> now evaluates and uses latest Terraform version as minimum version if no version is specified instead of using a static default value.
+
+REMOVED FEATURES:
+* Removed legacy module function: <code>Install-Terraform</code>
+* Removed legacy module function: <code>Invoke-TerraformStatePull</code>; now part of new function <code>Invoke-TerraformState</code> with parameter <code>-Backup</code>
+* Removed legacy module function: <code>Invoke-TerraformStatePush</code>; now part of new function <code>Invoke-TerraformState</code> with parameter <code>-Restore</code>
+* Removed legacy module function: <code>Uninstall-Terraform</code>
+* Removed legacy private module function: <code>Compare-TerraformVersion</code>
+* Removed legacy private module function: <code>Get-TerraformVersionAvailable</code>
+* Removed legacy private module function: <code>Get-TerraformVersionInstalled</code>
+  
 #### 1.3.0
-
+  
 BREAKING CHANGES:  
 * Module function <code>Install-Terraform</code> and its related private functions are now marked as legacy. The function only supports machine-based single-version setups which requires admin permissions. It is now replaced by new function <code>Install-TerraformApplicationVersion</code> which supports user-profile-based multi-version setups without admin permissions. The legacy function will be removed in the next release.
 * Module function <code>Uninstall-Terraform</code> and its related private functions are now marked as legacy. The function only supports machine-based single-version setups which requires admin permissions. It is now replaced by new function <code>Uninstall-TerraformApplicationVersion</code> which supports user-profile-based multi-version setups without admin permissions. The legacy function will be removed in the next release.

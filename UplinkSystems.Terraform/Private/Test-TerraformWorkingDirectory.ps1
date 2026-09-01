@@ -21,7 +21,7 @@ function Test-TerraformWorkingDirectory {
 	begin {
 		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
-		$WorkingDir = $(Get-Item $WorkingDir).FullName
+		$WorkingDir = $(Get-Item -Path $WorkingDir).FullName
 	}
 	process {
 		$TerraformWorkDir = Test-Path -Path $WorkingDir

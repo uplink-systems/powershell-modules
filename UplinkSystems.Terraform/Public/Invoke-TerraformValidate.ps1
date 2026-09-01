@@ -21,15 +21,13 @@ function Invoke-TerraformValidate {
 	begin {
 		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
-		Set-Location -Path $WorkingDir
 	}
 	process {
 		Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 		Write-Host -Object "-> Validating code...`n" -ForegroundColor DarkGray
-		Start-Process -FilePath "terraform.exe" -ArgumentList "validate" -NoNewWindow -PassThru -Wait | Out-Null
+		Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "validate" -NoNewWindow -PassThru -Wait | Out-Null
 	}
 	end {
-		Set-Location -Path $MyInvocation.PSScriptRoot
 		$ErrorActionPreference = $Preferences[0]
 	}
 }

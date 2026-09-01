@@ -27,20 +27,18 @@ function Invoke-TerraformGet {
 	begin {
 		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
-		Set-Location -Path $WorkingDir
 	}
 	process {
 		Write-Host -Object "`n$($WorkingDir) " -ForegroundColor White -NoNewLine
 		if ($Update) {
 			Write-Host -Object "-> Checking for required modulels and installing/replacing/updating...`n" -ForegroundColor DarkGray
-			Start-Process -FilePath "terraform.exe" -ArgumentList "get -update" -NoNewWindow -PassThru -Wait | Out-Null
+			Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "get -update" -NoNewWindow -PassThru -Wait | Out-Null
 		} else {
 			Write-Host -Object "-> Checking for required modules and installing...`n" -ForegroundColor DarkGray
-			Start-Process -FilePath "terraform.exe" -ArgumentList "get" -NoNewWindow -PassThru -Wait | Out-Null
+			Start-Process -FilePath "terraform.exe" -WorkingDirectory $WorkingDir -ArgumentList "get" -NoNewWindow -PassThru -Wait | Out-Null
 		}
 	}
 	end {
-		Set-Location -Path $MyInvocation.PSScriptRoot
 		$ErrorActionPreference = $Preferences[0]
 	}
 }

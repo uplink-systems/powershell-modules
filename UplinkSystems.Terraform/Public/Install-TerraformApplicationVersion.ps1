@@ -57,6 +57,8 @@ function Install-TerraformApplicationVersion {
         [Switch] $SetAsActive
     )
     begin {
+		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
+		$ErrorActionPreference = 'SilentlyContinue'
         # validate Terraform app root path, create if not exists
         if (-not(Test-Path -Path $TerraformAppRootPath)) {New-Item -Path $TerraformAppRootPath -ItemType Directory -Force | Out-Null}
         # get content of HashiCorp Terraform release page and filter for available releases
@@ -140,5 +142,7 @@ function Install-TerraformApplicationVersion {
             }
         }
     }
-    end {}
+    end {
+        $ErrorActionPreference = $Preferences[0]
+    }
 }

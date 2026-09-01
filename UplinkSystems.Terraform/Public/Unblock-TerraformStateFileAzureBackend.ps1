@@ -71,7 +71,6 @@ function Unblock-TerraformStateFileAzureBackend {
 	begin {
 		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
 		$ErrorActionPreference = 'SilentlyContinue'
-		Set-Location -Path $WorkingDir
         $RequiredModules = 'Az.Accounts','Az.Storage'
         foreach ($RequiredModule in $RequiredModules) {if (-not(Get-Module -Name $RequiredModule -ListAvailable)) {Install-Module -Name $RequiredModule -Scope CurrentUser -AllowClobber -AcceptLicense -Force};Import-Module -Name $RequiredModule -Scope Global}
         if ($ClientId -and $ClientSecret) {Connect-AzAccount -ServicePrincipal -Tenant $TenantId -SubscriptionId $SubscriptionId -Credential (New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $ClientId, $(ConvertTo-SecureString -String $ClientSecret -AsPlainText -Force))}
@@ -88,7 +87,6 @@ function Unblock-TerraformStateFileAzureBackend {
     }
 	end {
         Disconnect-AzAccount
-		Set-Location -Path $MyInvocation.PSScriptRoot
 		$ErrorActionPreference = $Preferences[0]
 	}
 }

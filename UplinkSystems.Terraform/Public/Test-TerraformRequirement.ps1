@@ -12,7 +12,7 @@ function Test-TerraformRequirement {
 	[CmdletBinding(HelpUri='https://github.com/uplink-systems/powershell-modules/UplinkSystems.Terraform')]
 	[Alias('Test-TfRequirement')]
 	param(
-		[Parameter(Mandatory=$false)] [string] $MinTerraformVersion = '1.12.0'
+		[Parameter(Mandatory=$false)] [string] $MinTerraformVersion = $(Get-TerraformApplicationReleaseNumber -HashiCorp) #'1.12.0'
 	)
 	begin {
 		[Array]$Preferences = $ErrorActionPreference,$WarningPreference,$InformationPreference
@@ -40,9 +40,9 @@ function Test-TerraformRequirement {
 			Start-Sleep -Seconds 2
 			exit 1
 		}
-		if (-not([Version]($(Get-TerraformVersionInstalled)[1]) -ge [Version]$MinTerraformVersion)) {
+		if (-not([Version]($(Get-TerraformApplicationActiveVersion)[1]) -ge [Version]$MinTerraformVersion)) {
 			Write-Host -Object "Failed...: " -ForegroundColor Red
-			Write-Host -Object "Minimum Terraform executable version ($MinTerraformVersion) not installed...`n" -ForegroundColor DarkGray
+			Write-Host -Object "Minimum Terraform executable version ($MinTerraformVersion) not installed or not set as active version...`n" -ForegroundColor DarkGray
 			Start-Sleep -Seconds 2
 			exit 1
 		}
