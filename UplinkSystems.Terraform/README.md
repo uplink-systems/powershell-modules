@@ -19,7 +19,9 @@ To achieve this goal the module contains the following public functions that can
 * <code>Invoke-TerraformState</code>
 * <code>Invoke-TerraformValidate</code>
 * <code>Invoke-TerraformWorkingDirectoryCleanup</code>
+* <code>New-TerraformCloudOrganization</code>
 * <code>New-TerraformProject</code>
+* <code>Set-TerraformApplicationVersion</code>
 * <code>Set-TerraformEnvironmentVariable</code>
 * <code>Stop-TerraformProcess</code>
 * <code>Test-TerraformRequirement</code>
