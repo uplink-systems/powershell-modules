@@ -38,6 +38,14 @@ The module is currently intended to run on Windows operating systems only.
 | <a name="requirement_powershell"></a> [PowerShell](#requirement\_powershell) | >= 7.4.0 |
 
 ### Release Notes
+
+#### 1.5.0
+
+NEW FEATURES:  
+* New module function: <code>New-TerraformCloudOrganization</code>
+  
+IMPROVEMENTS:
+* Added status output to <code>Invoke-TerraformState</code> function.
   
 #### 1.4.0
   

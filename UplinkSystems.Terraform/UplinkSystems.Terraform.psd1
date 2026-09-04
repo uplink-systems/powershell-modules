@@ -12,7 +12,7 @@
 RootModule = 'UplinkSystems.Terraform.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.4.0'
+ModuleVersion = '1.5.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -80,6 +80,7 @@ FunctionsToExport = 'Get-TerraformApplicationReleaseNumber',
                     'Invoke-TerraformState',
                     'Invoke-TerraformValidate',
                     'Invoke-TerraformWorkingDirectoryCleanup',
+                    'New-TerraformCloudOrganization',
                     'New-TerraformProject',
                     'Set-TerraformApplicationActiveVersion',
                     'Set-TerraformEnvironmentVariable',
@@ -106,6 +107,7 @@ AliasesToExport =   'Get-TfApplicationReleaseNumber',
                     'Invoke-TfState',
                     'Invoke-TfValidate',
                     'Invoke-TfWorkingDirCleanup',
+                    'New-TfCloudOrganization',
                     'New-TfProject',
                     'Set-TfApplicationActiveVersion',
                     'Set-TfEnvironmentVariable',
@@ -139,6 +141,7 @@ FileList =          'UplinkSystems.Terraform.psd1',
                     'Public\Invoke-TerraformState.ps1',
                     'Public\Invoke-TerraformValidate.ps1',
                     'Public\Invoke-TerraformWorkingDirectoryCleanup.ps1',
+                    'Public\New-TerraformCloudOrganization',
                     'Public\New-TerraformProject.ps1',
                     'Public\Set-TerraformApplicationActiveVersion.ps1',
                     'Public\Set-TerraformEnvironmentVariable.ps1',

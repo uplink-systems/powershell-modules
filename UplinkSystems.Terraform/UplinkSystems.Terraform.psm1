@@ -10,6 +10,12 @@ $ModuleImportLogo=@"
 # write composed logo to host...
 Write-Host -Object $ModuleImportLogo -ForegroundColor Blue
 
+# set default parameter values..
+$Script:PSDefaultParameterValues = @{
+	'Select-Object:Property' = '*'
+    'Out-File:Encoding' = 'utf8'
+}
+
 # set variables for public and private function import...
 $DirectorySeparator = [System.IO.Path]::DirectorySeparatorChar
 $ModuleName = (Get-Item -Path $PSCommandPath).Basename
